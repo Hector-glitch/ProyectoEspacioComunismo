@@ -15,6 +15,7 @@ public class LaunchPage implements ActionListener {
 
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("Programa Espacial URSS");
         frame.setSize(420, 420);
         frame.setLayout(null);
         frame.setVisible(true);
@@ -36,7 +37,7 @@ public class LaunchPage implements ActionListener {
         ContraTextF.setBounds(100, 160, 200, 30);
         frame.add(ContraTextF);
 
-        String[] choices = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
+        String[] choices = { "Mecànic","Astronauta", "Físic","Espia","Admin"};
         TreballsCB = new JComboBox(choices);
         TreballsCB.setBounds(100,200,200,40);
         frame.add(TreballsCB);
@@ -55,9 +56,21 @@ public class LaunchPage implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == myButton) {
-            if (ContraTextF.getText().equals("Patata")) {
-                Astronauta myWindow = new Astronauta();
+            if (ContraTextF.getText().equals("Patata") & TreballsCB.getSelectedItem().equals("Mecànic")) {
+                Mecanico myWindow = new Mecanico();
                 frame.dispose(); //frame.setVisible(false);
+            } else if (ContraTextF.getText().equals("Patata") & TreballsCB.getSelectedItem().equals("Astronauta")) {
+                Astronauta myWindow = new Astronauta();
+                frame.dispose();
+            } else if (ContraTextF.getText().equals("Patata") & TreballsCB.getSelectedItem().equals("Físic")){
+                Fisico myWindow = new Fisico();
+                frame.dispose();
+            } else if (ContraTextF.getText().equals("Patata") & TreballsCB.getSelectedItem().equals("Espia")) {
+                Espia myWindow = new Espia();
+                frame.dispose();
+            } else {
+                Admin myWindow = new Admin();
+                frame.dispose();
             }
         }
     }
