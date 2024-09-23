@@ -10,6 +10,7 @@ public class LaunchPage implements ActionListener {
     JLabel ContraLabel;
     JTextField ContraTextF;
     JComboBox TreballsCB;
+    JPanel GreyPanel;
 
     LaunchPage() {
 
@@ -41,7 +42,6 @@ public class LaunchPage implements ActionListener {
         TreballsCB = new JComboBox(choices);
         TreballsCB.setBounds(100,200,200,40);
         frame.add(TreballsCB);
-
 
         myButton = new JButton("New Window");
         myButton.setBounds(100, 250, 200, 40);

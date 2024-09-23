@@ -1,7 +1,17 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class Fisico {
     JFrame frame;
+    JLabel nomL;
+    JLabel salariL;
+    JLabel edatL;
+    JLabel adreçaL;
+    JLabel expL;
+    JLabel ciutatL;
+    JLabel sexeL;
+    JPanel GreyPanel;
+    JLabel TitolAcademicL;
 
     Fisico(){
         frame = new JFrame();
@@ -11,5 +21,46 @@ public class Fisico {
         frame.setLayout(null);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null); // Centrar el frame
+
+        GreyPanel = new JPanel();
+        GreyPanel.setBackground(Color.gray);
+        GreyPanel.setLayout(null);
+        GreyPanel.setBounds(20,40,200,300);
+        frame.add(GreyPanel);
+
+        nomL = new JLabel("Nom: ");
+        nomL.setBounds(20,10,80,20);
+        GreyPanel.add(nomL);
+
+        salariL = new JLabel("Salari: ");
+        salariL.setBounds(20,30,80,20);
+        GreyPanel.add(salariL);
+
+        edatL = new JLabel("Edad: ");
+        edatL.setBounds(20,50,80,20);
+        GreyPanel.add(edatL);
+
+        adreçaL = new JLabel("Adreça: ");
+        adreçaL.setBounds(20,70,80,20);
+        GreyPanel.add(adreçaL);
+
+        expL = new JLabel("Anys Exp.: ");
+        expL.setBounds(20,90,80,20);
+        GreyPanel.add(expL);
+
+        ciutatL = new JLabel("Ciutat d'Ofici: ");
+        ciutatL.setBounds(20,110,80,20);
+        GreyPanel.add(ciutatL);
+
+        sexeL = new JLabel("Sexe: ");
+        sexeL.setBounds(20,130,80,20);
+        GreyPanel.add(sexeL);
+
+        TitolAcademicL = new JLabel("Titol academic: ");
+        TitolAcademicL.setBounds(20,150,80,20);
+        GreyPanel.add(TitolAcademicL);
+
+
+
     }
 }

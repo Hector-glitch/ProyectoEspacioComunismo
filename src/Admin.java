@@ -2,6 +2,8 @@ import javax.swing.*;
 
 public class Admin {
     JFrame frame;
+    JMenuBar menuBar;
+    JMenu mecanicMenu;
 
     Admin(){
         frame = new JFrame();
@@ -11,5 +13,13 @@ public class Admin {
         frame.setLayout(null);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null); // Centrar el frame
+
+        menuBar = new JMenuBar();
+        mecanicMenu = new JMenu("Mecànic");
+
+
+        frame.setJMenuBar(menuBar);
+        menuBar.add(mecanicMenu);
+
     }
 }
