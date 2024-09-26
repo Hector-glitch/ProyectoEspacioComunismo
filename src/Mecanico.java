@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Mecanico implements ActionListener {
+public class Mecanico extends Empleado implements ActionListener {
     JFrame frame;
     JLabel nomL;
     JLabel salariL;
@@ -14,6 +14,12 @@ public class Mecanico implements ActionListener {
     JLabel sexeL;
     JLabel numTallerL;
     JPanel GreyPanel;
+    private String numeroDeTaller;
+
+    public Mecanico(String nombre, String apellido, int edad, String direccion, String anosDeExperiencia, String sexo, String numeroDeTaller) {
+        super(nombre, apellido, edad, direccion, anosDeExperiencia, sexo);
+        this.numeroDeTaller = numeroDeTaller;
+    }
 
 
     Mecanico(){

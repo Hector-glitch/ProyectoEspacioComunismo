@@ -7,7 +7,13 @@ public class Espia {
     JLabel GreyPanel;
 
 
-    Espia(){
+    private String nombreEnClave;
+    private String telefonoContacto;
+
+
+    Espia(String nombre, String telefono){
+        nombreEnClave = nombre;
+        telefonoContacto = telefono;
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Espia");
