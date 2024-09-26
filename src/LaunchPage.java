@@ -9,8 +9,6 @@ public class LaunchPage implements ActionListener {
     JTextField UserTextF;
     JLabel ContraLabel;
     JTextField ContraTextF;
-    JComboBox TreballsCB;
-    JPanel GreyPanel;
 
     LaunchPage() {
 
@@ -38,13 +36,8 @@ public class LaunchPage implements ActionListener {
         ContraTextF.setBounds(100, 160, 200, 30);
         frame.add(ContraTextF);
 
-        String[] choices = { "Mecànic","Astronauta", "Físic","Espia","Admin"};
-        TreballsCB = new JComboBox(choices);
-        TreballsCB.setBounds(100,200,200,40);
-        frame.add(TreballsCB);
-
         myButton = new JButton("New Window");
-        myButton.setBounds(100, 250, 200, 40);
+        myButton.setBounds(100, 200, 200, 40);
         myButton.setFocusable(false);
         myButton.addActionListener(this);
         frame.add(myButton);
@@ -56,20 +49,22 @@ public class LaunchPage implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == myButton) {
-            if (ContraTextF.getText().equals("Patata") & TreballsCB.getSelectedItem().equals("Mecànic")) {
-                Mecanico myWindow = new Mecanico();
+            if (UserTextF.getText().equals("Admin") & ContraTextF.getText().equals("Patata")) {
+                Admin myWindow = new Admin();
                 frame.dispose(); //frame.setVisible(false);
-            } else if (ContraTextF.getText().equals("Patata") & TreballsCB.getSelectedItem().equals("Astronauta")) {
-                Astronauta myWindow = new Astronauta();
+            } else if (UserTextF.getText().equals("Mecanic") & ContraTextF.getText().equals("Patata")) {
+                MecanicFrame myWindow = new MecanicFrame();
                 frame.dispose();
-            } else if (ContraTextF.getText().equals("Patata") & TreballsCB.getSelectedItem().equals("Físic")){
-                Fisico myWindow = new Fisico();
+            } else if (UserTextF.getText().equals("Fisic") & ContraTextF.getText().equals("Patata")){
+                FisicFrame myWindow = new FisicFrame();
                 frame.dispose();
-            } else if (ContraTextF.getText().equals("Patata") & TreballsCB.getSelectedItem().equals("Espia")) {
-                Espia myWindow = new Espia();
+            } else if (UserTextF.getText().equals("AstronautaFrame") & ContraTextF.getText().equals("Patata")) {
+                AstronautaFrame myWindow = new AstronautaFrame();
+                frame.dispose();
+            } else if (UserTextF.getText().equals("EspiaFrame") & ContraTextF.getText().equals("Patata")) {
+                EspiaFrame myWindow = new EspiaFrame();
                 frame.dispose();
             } else {
-                Admin myWindow = new Admin();
                 frame.dispose();
             }
         }

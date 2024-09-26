@@ -19,8 +19,8 @@ public class Main {
         frame.add(label); // Añadir la etiqueta al frame
         */
 
-        LaunchPage launchPage = new LaunchPage();
-        //Mecanico mecanico = new Mecanico();
+        //LaunchPage launchPage = new LaunchPage();
+        //FisicFrame fisic = new FisicFrame();
 
     }
 }

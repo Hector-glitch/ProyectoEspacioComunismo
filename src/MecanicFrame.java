@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Mecanico implements ActionListener {
+public class MecanicFrame implements ActionListener {
     JFrame frame;
     JLabel nomL;
     JLabel salariL;
@@ -14,13 +14,14 @@ public class Mecanico implements ActionListener {
     JLabel sexeL;
     JLabel numTallerL;
     JPanel GreyPanel;
+    JPanel AccioPanel;
 
 
-    Mecanico(){
+    MecanicFrame(){
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Mecànic");
-        frame.setSize(420, 420);
+        frame.setSize(520, 420);
         frame.setLayout(null);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null); // Centrar el frame
@@ -30,6 +31,12 @@ public class Mecanico implements ActionListener {
         GreyPanel.setLayout(null);
         GreyPanel.setBounds(20,40,200,300);
         frame.add(GreyPanel);
+
+        AccioPanel = new JPanel();
+        AccioPanel.setBackground(Color.lightGray);
+        AccioPanel.setLayout(null);
+        AccioPanel.setBounds(240,40,200,300);
+        frame.add(AccioPanel);
 
         nomL = new JLabel("Nom: ");
         nomL.setBounds(20,10,80,20);
@@ -62,6 +69,9 @@ public class Mecanico implements ActionListener {
         numTallerL = new JLabel("Num. Taller: ");
         numTallerL.setBounds(20,150,80,20);
         GreyPanel.add(numTallerL);
+
+        frame.revalidate();
+        frame.repaint();
 
     }
     public void actionPerformed(ActionEvent e) {
