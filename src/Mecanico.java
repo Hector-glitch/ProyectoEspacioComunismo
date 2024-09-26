@@ -19,10 +19,8 @@ public class Mecanico extends Empleado implements ActionListener {
     public Mecanico(String nombre, String apellido, int edad, String direccion, String anosDeExperiencia, String sexo, String numeroDeTaller) {
         super(nombre, apellido, edad, direccion, anosDeExperiencia, sexo);
         this.numeroDeTaller = numeroDeTaller;
-    }
 
 
-    Mecanico(){
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Mecànic");
