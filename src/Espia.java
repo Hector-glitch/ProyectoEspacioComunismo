@@ -29,5 +29,8 @@ public class Espia {
         TelefonL = new JLabel("Telefon de contacte: ");
         TelefonL.setBounds(20,30,80,20);
         GreyPanel.add(TelefonL);
+
+        frame.revalidate();
+        frame.repaint();
     }
 }

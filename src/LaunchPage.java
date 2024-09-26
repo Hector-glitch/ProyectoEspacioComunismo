@@ -1,4 +1,4 @@
-import javax.swing.*;
+/*import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -53,20 +53,20 @@ public class LaunchPage implements ActionListener {
                 Admin myWindow = new Admin();
                 frame.dispose(); //frame.setVisible(false);
             } else if (UserTextF.getText().equals("Mecanic") & ContraTextF.getText().equals("Patata")) {
-                MecanicFrame myWindow = new MecanicFrame();
+                Mecanico myWindow = new Mecanico();
                 frame.dispose();
             } else if (UserTextF.getText().equals("Fisic") & ContraTextF.getText().equals("Patata")){
                 FisicFrame myWindow = new FisicFrame();
                 frame.dispose();
-            } else if (UserTextF.getText().equals("AstronautaFrame") & ContraTextF.getText().equals("Patata")) {
-                AstronautaFrame myWindow = new AstronautaFrame();
+            } else if (UserTextF.getText().equals("Astronauta") & ContraTextF.getText().equals("Patata")) {
+                Astronauta myWindow = new Astronauta();
                 frame.dispose();
-            } else if (UserTextF.getText().equals("EspiaFrame") & ContraTextF.getText().equals("Patata")) {
-                EspiaFrame myWindow = new EspiaFrame();
+            } else if (UserTextF.getText().equals("Espia") & ContraTextF.getText().equals("Patata")) {
+                Espia myWindow = new Espia();
                 frame.dispose();
             } else {
                 frame.dispose();
             }
         }
     }
-}
+}*/

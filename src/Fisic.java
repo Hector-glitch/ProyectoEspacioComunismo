@@ -22,7 +22,6 @@ public class Fisic {
             double area = 4 * Math.PI * Math.pow(radi, 2);
             return area; // Retornar l'àrea calculada
         } else {
-            System.out.println("Planeta no trobat.");
             return -1;
         }
     }
@@ -43,7 +42,6 @@ public class Fisic {
             double temps = (distancia * 2) / 147_000_000.0;
             return temps; // Retornar el temps calculat
         } else {
-            System.out.println("Planeta no trobat.");
             return -1; // Retornar -1 si el planeta no és trobat
         }
     }

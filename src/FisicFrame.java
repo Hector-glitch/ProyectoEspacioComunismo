@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class FisicFrame {
     public static void main(String[] args) {
@@ -14,7 +15,9 @@ public class FisicFrame {
 
     JFrame frame;
     JLabel nomL;
+    JLabel nomV;
     JLabel salariL;
+    JLabel salariV;
     JLabel edatL;
     JLabel adreçaL;
     JLabel expL;
@@ -29,8 +32,6 @@ public class FisicFrame {
     JTextArea areaTextArea;
     JTextArea costArea;
     JTextArea investigacioArea;
-
-
     // Mapa per a les distàncies dels planetes
     HashMap<String, String> distancias;
 
@@ -64,9 +65,17 @@ public class FisicFrame {
         nomL.setBounds(20, 10, 80, 20);
         GreyPanel.add(nomL);
 
+        nomV = new JLabel("");
+        nomV.setBounds(40,10,80,20);
+        GreyPanel.add(nomV);
+
         salariL = new JLabel("Salari: ");
         salariL.setBounds(20, 30, 80, 20);
         GreyPanel.add(salariL);
+
+        salariV = new JLabel ("");
+        salariV.setBounds(40,10,80,20);
+        GreyPanel.add(salariV);
 
         edatL = new JLabel("Edad: ");
         edatL.setBounds(20, 50, 80, 20);
@@ -109,7 +118,7 @@ public class FisicFrame {
         GreyPanel.add(entradaHoraLabel);
 
         // Etiqueta que canviarà per mostrar la data i hora d'entrada
-        JLabel entradaHoraValor = new JLabel("N/A");
+        JLabel entradaHoraValor = new JLabel(" ");
         entradaHoraValor.setBounds(100, 255, 200, 20); // Ajustar la posició i mida
         GreyPanel.add(entradaHoraValor);
 
@@ -119,7 +128,7 @@ public class FisicFrame {
         GreyPanel.add(sortidaHoraLabel);
 
         // Etiqueta que canviarà per mostrar la data i hora de sortida
-        JLabel sortidaHoraValor = new JLabel("N/A");
+        JLabel sortidaHoraValor = new JLabel(" ");
         sortidaHoraValor.setBounds(100, 270, 200, 20); // Ajustar la posició i mida
         GreyPanel.add(sortidaHoraValor);
 
@@ -140,7 +149,7 @@ public class FisicFrame {
         AccioPanel.add(planetasComboBox);
 
         // Cambiar JLabel a JTextArea per mostrar la distància
-        distanciaArea = new JTextArea("Distància des de la terra: ");
+        distanciaArea = new JTextArea(" ");
         distanciaArea.setBounds(20, 50, 160, 30);
         distanciaArea.setLineWrap(true);
         distanciaArea.setWrapStyleWord(true);
@@ -150,7 +159,7 @@ public class FisicFrame {
         AccioPanel.add(distanciaArea);
 
         // Crear un JTextArea per mostrar el temps calculat
-        tempsArea = new JTextArea("Temps de viatge:" + "          ");
+        tempsArea = new JTextArea(" ");
         tempsArea.setBounds(20, 90, 100, 30); // Ajustar la posició i mida
         tempsArea.setLineWrap(true); // Permetre salt de línia
         tempsArea.setWrapStyleWord(true); // Ajustar per paraules senceres
@@ -160,7 +169,7 @@ public class FisicFrame {
         AccioPanel.add(tempsArea);
 
         // Crear una nova JTextArea per mostrar l'àrea del planeta
-        areaTextArea = new JTextArea("Àrea del planeta: ");
+        areaTextArea = new JTextArea(" ");
         areaTextArea.setBounds(20, 130, 120, 30); // Ajustar la posició i mida
         areaTextArea.setLineWrap(true); // Permetre salt de línia
         areaTextArea.setWrapStyleWord(true); // Ajustar per paraules senceres
@@ -170,7 +179,7 @@ public class FisicFrame {
         AccioPanel.add(areaTextArea);
 
         // Crear JTextArea per mostrar el cost
-        costArea = new JTextArea("Cost per recórrer: ");
+        costArea = new JTextArea(" ");
         costArea.setBounds(20, 170, 200, 60);
         costArea.setLineWrap(true);
         costArea.setWrapStyleWord(true);
@@ -200,14 +209,18 @@ public class FisicFrame {
             public void actionPerformed(ActionEvent e) {
                 String planetaSeleccionado = (String) planetasComboBox.getSelectedItem();
                 String distancia = distancias.get(planetaSeleccionado);
-                distanciaArea.setText("Distància des de la terra: " + distancia);
+                if (Objects.equals(planetasComboBox.getSelectedItem(), "Triar Planeta")) {
+                    distanciaArea.setText(" ");
+                } else {
+                    distanciaArea.setText("Distància des de la terra: " + distancia);
+                }
 
                 // Calcular el temps
                 double temps = Fisic.CalcTemps(planetaSeleccionado);
                 if (temps != -1) {
                     tempsArea.setText("Temps de viatge: " + decimalFormat.format(temps) + " anys");
                 } else {
-                    tempsArea.setText("Temps de viatge: N/A");
+                    tempsArea.setText(" ");
                 }
 
                 // Calcular i mostrar l'àrea del planeta
@@ -215,7 +228,7 @@ public class FisicFrame {
                 if (area != -1) {
                     areaTextArea.setText("Àrea del planeta: " + decimalFormat.format(area) + " km²");
                 } else {
-                    areaTextArea.setText("Àrea del planeta: N/A");
+                    areaTextArea.setText(" ");
                 }
 
                 // Calcular i mostrar el cost per recórrer l'àrea del planeta
@@ -223,13 +236,15 @@ public class FisicFrame {
                 if (cost != -1) {
                     costArea.setText("Cost per recórrer: " + decimalFormat.format(cost) + " rubles");
                 } else {
-                    costArea.setText("Cost per recórrer: N/A");
+                    costArea.setText(" ");
                 }
 
                 // Determinar si és el planeta més econòmic d'investigar
                 String planetaEconomico = Fisic.CompararCostos();
                 if (planetaSeleccionado.equals(planetaEconomico)) {
                     investigacioArea.setText("Inversio en l'investigacio: Es el mes economic");
+                } else if (planetasComboBox.getSelectedItem().equals("Triar Planeta")){
+                    investigacioArea.setText(" ");
                 } else {
                     investigacioArea.setText("Inversio en l'investigacio: No és el més econòmic");
                 }
@@ -268,8 +283,6 @@ public class FisicFrame {
                 entradaButton.setEnabled(true);
             }
         });
-
-
 
         frame.revalidate();
         frame.repaint();

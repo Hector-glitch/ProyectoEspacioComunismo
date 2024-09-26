@@ -1,11 +1,13 @@
 import javax.swing.*;
 
 public class Admin {
+    public static void main(String[] args) {
+        Admin f = new Admin();
+    }
     JFrame frame;
-    JMenuBar menuBar;
-    JMenu mecanicMenu;
 
     Admin(){
+
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Admin");
@@ -14,12 +16,6 @@ public class Admin {
         frame.setVisible(true);
         frame.setLocationRelativeTo(null); // Centrar el frame
 
-        menuBar = new JMenuBar();
-        mecanicMenu = new JMenu("Mecànic");
-
-
-        frame.setJMenuBar(menuBar);
-        menuBar.add(mecanicMenu);
 
     }
 }

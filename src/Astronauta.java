@@ -11,7 +11,6 @@ public class Astronauta extends Empleado {
     JLabel missionsOKL;
     JLabel missionsKOL;
     JPanel GreyPanel;
-    JPanel AccioPanel;
 
     private String fechaPrimerVuelo;
 
@@ -61,6 +60,8 @@ public class Astronauta extends Empleado {
         missionsKOL.setBounds(20,130,80,20);
         GreyPanel.add(missionsKOL);
 
+        frame.revalidate();
+        frame.repaint();
 
     }
 }
