@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MecanicFrame implements ActionListener {
+public class Mecanico extends Empleado implements ActionListener {
     JFrame frame;
     JLabel nomL;
     JLabel salariL;
@@ -14,10 +14,15 @@ public class MecanicFrame implements ActionListener {
     JLabel sexeL;
     JLabel numTallerL;
     JPanel GreyPanel;
-    JPanel AccioPanel;
+    private String numeroDeTaller;
+
+    public Mecanico(String nombre, String apellido, int edad, String direccion, String anosDeExperiencia, String sexo, String numeroDeTaller) {
+        super(nombre, apellido, edad, direccion, anosDeExperiencia, sexo);
+        this.numeroDeTaller = numeroDeTaller;
+    }
 
 
-    MecanicFrame(){
+    Mecanico(){
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Mecànic");
@@ -31,12 +36,6 @@ public class MecanicFrame implements ActionListener {
         GreyPanel.setLayout(null);
         GreyPanel.setBounds(20,40,200,300);
         frame.add(GreyPanel);
-
-        AccioPanel = new JPanel();
-        AccioPanel.setBackground(Color.lightGray);
-        AccioPanel.setLayout(null);
-        AccioPanel.setBounds(240,40,200,300);
-        frame.add(AccioPanel);
 
         nomL = new JLabel("Nom: ");
         nomL.setBounds(20,10,80,20);

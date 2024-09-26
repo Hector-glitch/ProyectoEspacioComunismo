@@ -1,16 +1,22 @@
 import javax.swing.*;
 
-public class EspiaFrame {
+public class Espia {
     JFrame frame;
     JLabel NomClauL;
     JLabel TelefonL;
     JLabel GreyPanel;
 
 
-    EspiaFrame(){
+    private String nombreEnClave;
+    private String telefonoContacto;
+
+
+    Espia(String nombre, String telefono){
+        nombreEnClave = nombre;
+        telefonoContacto = telefono;
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("EspiaFrame");
+        frame.setTitle("Espia");
         frame.setSize(420, 420);
         frame.setLayout(null);
         frame.setVisible(true);

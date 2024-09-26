@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class AstronautaFrame {
+public class Astronauta extends Empleado {
     JFrame frame;
     JLabel nomL;
     JLabel edatL;
@@ -13,11 +13,15 @@ public class AstronautaFrame {
     JPanel GreyPanel;
     JPanel AccioPanel;
 
-    AstronautaFrame() {
+    private String fechaPrimerVuelo;
+
+    Astronauta(String fecha, String nombre, String apellido, int edad, String direccion, String anosDeExperiencia, String sexo) {
+        super(nombre, apellido, edad, direccion, anosDeExperiencia, sexo);
+        this.fechaPrimerVuelo = fecha;
 
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("AstronautaFrame");
+        frame.setTitle("Astronauta");
         frame.setSize(420, 420);
         frame.setLayout(null);
         frame.setVisible(true);
