@@ -8,24 +8,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public class FisicFrame {
-    public static void main(String[] args) {
-        FisicFrame f = new FisicFrame();
-    }
+public class FisicFrame extends Empleado implements ActionListener {
 
     JFrame frame;
-    JLabel nomL;
-    JLabel nomV;
-    JLabel salariL;
-    JLabel salariV;
-    JLabel edatL;
-    JLabel adreçaL;
-    JLabel expL;
-    JLabel ciutatL;
-    JLabel sexeL;
+    JLabel nomL,  salariL, edatL, adreçaL, expL, ciutatL, sexeL, TitolAcademicL;
     JPanel GreyPanel;
     JPanel AccioPanel;
-    JLabel TitolAcademicL;
     JComboBox<String> planetasComboBox;
     JTextArea distanciaArea;
     JTextArea tempsArea; // Nou JTextArea per mostrar el temps calculat
@@ -34,8 +22,11 @@ public class FisicFrame {
     JTextArea investigacioArea;
     // Mapa per a les distàncies dels planetes
     HashMap<String, String> distancias;
+    private String titolAcademic;
 
-    FisicFrame() {
+    public FisicFrame(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String titolAcademic) {
+        super(nombre, salari, edad, direccion, anosDeExperiencia, sexo);
+        this.titolAcademic = titolAcademic;
         // Inicialitzar el mapa de distàncies
         distancias = new HashMap<>();
         distancias.put("Triar Planeta", " ");
@@ -61,31 +52,23 @@ public class FisicFrame {
         GreyPanel.setBounds(20, 40, 200, 300);
         frame.add(GreyPanel);
 
-        nomL = new JLabel("Nom: ");
+        nomL = new JLabel("Nom: " + nombre);
         nomL.setBounds(20, 10, 80, 20);
         GreyPanel.add(nomL);
 
-        nomV = new JLabel("");
-        nomV.setBounds(40,10,80,20);
-        GreyPanel.add(nomV);
-
-        salariL = new JLabel("Salari: ");
+        salariL = new JLabel("Salari: " + salari);
         salariL.setBounds(20, 30, 80, 20);
         GreyPanel.add(salariL);
 
-        salariV = new JLabel ("");
-        salariV.setBounds(40,10,80,20);
-        GreyPanel.add(salariV);
-
-        edatL = new JLabel("Edad: ");
+        edatL = new JLabel("Edad: " + edad);
         edatL.setBounds(20, 50, 80, 20);
         GreyPanel.add(edatL);
 
-        adreçaL = new JLabel("Adreça: ");
+        adreçaL = new JLabel("Adreça: " + direccion);
         adreçaL.setBounds(20, 70, 80, 20);
         GreyPanel.add(adreçaL);
 
-        expL = new JLabel("Anys Exp.: ");
+        expL = new JLabel("Anys Exp.: " + anosDeExperiencia);
         expL.setBounds(20, 90, 80, 20);
         GreyPanel.add(expL);
 
@@ -93,11 +76,11 @@ public class FisicFrame {
         ciutatL.setBounds(20, 110, 100, 20);
         GreyPanel.add(ciutatL);
 
-        sexeL = new JLabel("Sexe: ");
+        sexeL = new JLabel("Sexe: " + sexo);
         sexeL.setBounds(20, 130, 80, 20);
         GreyPanel.add(sexeL);
 
-        TitolAcademicL = new JLabel("Titol academic: ");
+        TitolAcademicL = new JLabel("Titol academic: " + titolAcademic);
         TitolAcademicL.setBounds(20, 150, 100, 20);
         GreyPanel.add(TitolAcademicL);
 
@@ -131,7 +114,6 @@ public class FisicFrame {
         JLabel sortidaHoraValor = new JLabel(" ");
         sortidaHoraValor.setBounds(100, 270, 200, 20); // Ajustar la posició i mida
         GreyPanel.add(sortidaHoraValor);
-
 
 
         //----------------------Altre panell---------------------------
@@ -199,7 +181,6 @@ public class FisicFrame {
         AccioPanel.add(investigacioArea);
 
 
-
         DecimalFormat decimalFormat = new DecimalFormat("#,###.00");
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy ");
 
@@ -243,7 +224,7 @@ public class FisicFrame {
                 String planetaEconomico = Fisic.CompararCostos();
                 if (planetaSeleccionado.equals(planetaEconomico)) {
                     investigacioArea.setText("Inversio en l'investigacio: Es el mes economic");
-                } else if (planetasComboBox.getSelectedItem().equals("Triar Planeta")){
+                } else if (planetasComboBox.getSelectedItem().equals("Triar Planeta")) {
                     investigacioArea.setText(" ");
                 } else {
                     investigacioArea.setText("Inversio en l'investigacio: No és el més econòmic");
@@ -267,7 +248,6 @@ public class FisicFrame {
             }
         });
 
-// ActionListener per al botó de sortida
         sortidaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -287,4 +267,10 @@ public class FisicFrame {
         frame.revalidate();
         frame.repaint();
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
 }
+

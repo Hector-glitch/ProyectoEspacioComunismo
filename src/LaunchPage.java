@@ -1,4 +1,4 @@
-/*import javax.swing.*;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,7 +11,6 @@ public class LaunchPage implements ActionListener {
     JTextField ContraTextF;
 
     LaunchPage() {
-
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Programa Espacial URSS");
@@ -29,14 +28,14 @@ public class LaunchPage implements ActionListener {
         frame.add(UserTextF);
 
         ContraLabel = new JLabel("Contrasenya");
-        ContraLabel.setBounds(100,130,200,40);
+        ContraLabel.setBounds(100, 130, 200, 40);
         frame.add(ContraLabel);
 
         ContraTextF = new JTextField();
         ContraTextF.setBounds(100, 160, 200, 30);
         frame.add(ContraTextF);
 
-        myButton = new JButton("New Window");
+        myButton = new JButton("Login");
         myButton.setBounds(100, 200, 200, 40);
         myButton.setFocusable(false);
         myButton.addActionListener(this);
@@ -44,29 +43,29 @@ public class LaunchPage implements ActionListener {
 
         frame.revalidate();
         frame.repaint();
-
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == myButton) {
-            if (UserTextF.getText().equals("Admin") & ContraTextF.getText().equals("Patata")) {
-                Admin myWindow = new Admin();
-                frame.dispose(); //frame.setVisible(false);
-            } else if (UserTextF.getText().equals("Mecanic") & ContraTextF.getText().equals("Patata")) {
-                Mecanico myWindow = new Mecanico();
-                frame.dispose();
-            } else if (UserTextF.getText().equals("Fisic") & ContraTextF.getText().equals("Patata")){
-                FisicFrame myWindow = new FisicFrame();
-                frame.dispose();
-            } else if (UserTextF.getText().equals("Astronauta") & ContraTextF.getText().equals("Patata")) {
-                Astronauta myWindow = new Astronauta();
-                frame.dispose();
-            } else if (UserTextF.getText().equals("Espia") & ContraTextF.getText().equals("Patata")) {
-                Espia myWindow = new Espia();
-                frame.dispose();
+            String username = UserTextF.getText();
+            String password = ContraTextF.getText();
+
+            Empleado empleado = conexio.autenticarUsuario(username, password);
+
+            if (empleado != null) {
+                // Aquí rediriges según el tipo de empleado
+                if (empleado instanceof Mecanico) {
+                    Mecanico MecanicoFrame = (Mecanico) empleado;
+                    frame.dispose();
+                } else if (empleado instanceof FisicFrame) {
+                    // No es necesario crear un nuevo FisicFrame aquí
+                    FisicFrame FisicFrame = (FisicFrame) empleado;
+                    frame.dispose();
+                }
+                // Añadir más tipos de empleados
             } else {
-                frame.dispose();
+                JOptionPane.showMessageDialog(frame, "Credenciales incorrectas");
             }
         }
     }
-}*/
+}
