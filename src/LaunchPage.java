@@ -58,8 +58,13 @@ public class LaunchPage implements ActionListener {
                     Mecanico MecanicoFrame = (Mecanico) empleado;
                     frame.dispose();
                 } else if (empleado instanceof FisicFrame) {
-                    // No es necesario crear un nuevo FisicFrame aquí
                     FisicFrame FisicFrame = (FisicFrame) empleado;
+                    frame.dispose();
+                } else if (empleado instanceof Astronauta) {
+                    Astronauta AstronautaFrame = (Astronauta) empleado;
+                    frame.dispose();
+                } else if (empleado instanceof Espia) {
+                    Espia EspiaFrame = (Espia) empleado;
                     frame.dispose();
                 }
                 // Añadir más tipos de empleados

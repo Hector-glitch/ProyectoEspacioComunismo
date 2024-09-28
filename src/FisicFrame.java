@@ -81,7 +81,7 @@ public class FisicFrame extends Empleado implements ActionListener {
         GreyPanel.add(sexeL);
 
         TitolAcademicL = new JLabel("Titol academic: " + titolAcademic);
-        TitolAcademicL.setBounds(20, 150, 100, 20);
+        TitolAcademicL.setBounds(20, 150, 150, 20);
         GreyPanel.add(TitolAcademicL);
 
         // Botó per fitxar hora d'entrada

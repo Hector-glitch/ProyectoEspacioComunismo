@@ -6,6 +6,7 @@ public class Empleado {
     private String AnysExp;
     private String sexo;
     private String numeroDeTaller; // Añadido si también es parte del empleado
+    private String titolAcademic;
 
     // Constructor modificado
     public Empleado(String nombre, int salari, int edad, String direccion, String AnysExp, String sexo) {

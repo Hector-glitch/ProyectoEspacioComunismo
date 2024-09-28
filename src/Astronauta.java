@@ -15,9 +15,9 @@ public class Astronauta extends Empleado {
     private String fechaPrimerVuelo;
 
     // Constructor modificado: quitar apellido
-    public Astronauta(String fecha, String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo) {
-        super(nombre, edad, salari, direccion, anosDeExperiencia, sexo); // Llama al constructor de Empleado correctamente
-        this.fechaPrimerVuelo = fecha;
+    public Astronauta(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String fechaPrimerVuelo) {
+        super(nombre, edad, salari, direccion, anosDeExperiencia, sexo);
+        this.fechaPrimerVuelo = fechaPrimerVuelo;
 
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

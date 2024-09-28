@@ -47,13 +47,16 @@ public class conexio {
                         empleado = new Mecanico(nombre, salari, edad, direccion, anosExp, sexo, numTaller);
                         break;
                     case "astronauta":
-                        // Implementar extracción para astronauta
+                        String primerVuelo = obtenerFechaPrimerVuelo(rs.getInt("num_empleado"));
+                        empleado = new Astronauta(nombre, salari, edad, direccion, anosExp, sexo, primerVuelo);
                         break;
                     case "espia":
-                        // Implementar extracción para espia
+                        String nombreClave = obtenerNombreClave(rs.getInt("num_empleado"));
+                        String telefono = obtenerTelefono(rs.getInt("num_empleado"));
+                        empleado = new Espia(nombre, salari, edad, direccion, anosExp, sexo, nombreClave, telefono);
                         break;
                     case "fisico":  // Nueva condición para Fisico
-                        String titolAcademic = obtenerTaller(rs.getInt("num_empleado"));
+                        String titolAcademic = obtenerTitulacionAcademica(rs.getInt("num_empleado"));
                         empleado = new FisicFrame(nombre, salari, edad, direccion, anosExp, sexo, titolAcademic);
                         break;
 
@@ -78,11 +81,14 @@ public class conexio {
                 "UNION ALL " +
                 "SELECT 'astronauta' AS rol FROM astronauta WHERE num_empleado = ? " +
                 "UNION ALL " +
-                "SELECT 'espia' AS rol FROM espia WHERE nombre_clave = ?";
+                "SELECT 'espia' AS rol FROM espia WHERE num_empleado = ? " + // Cambiado a num_empleado
+                "UNION ALL " +
+                "SELECT 'fisico' AS rol FROM fisico WHERE num_empleado = ? ";
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setInt(1, numEmpleado);
         stmt.setInt(2, numEmpleado);
-        stmt.setInt(3, numEmpleado);
+        stmt.setInt(3, numEmpleado); // Cambiado a num_empleado
+        stmt.setInt(4, numEmpleado);
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {
@@ -104,4 +110,59 @@ public class conexio {
         }
         return null;
     }
+
+    private static String obtenerTitulacionAcademica(int numEmpleado) throws SQLException {
+        Connection conn = getConnection();
+        String query = "SELECT titulacion FROM fisico WHERE num_empleado = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setInt(1, numEmpleado);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            return rs.getString("titulacion");
+        }
+        return null;
+    }
+
+    // Método para obtener la fecha del primer vuelo del astronauta
+    private static String obtenerFechaPrimerVuelo(int numEmpleado) throws SQLException {
+        Connection conn = getConnection();
+        String query = "SELECT primer_vuelo FROM astronauta WHERE num_empleado = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setInt(1, numEmpleado);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            return rs.getString("primer_vuelo"); // Devuelve la fecha en formato String
+        }
+        return null; // Retorna null si no se encuentra la fecha
+    }
+
+    private static String obtenerNombreClave(int numEmpleado) throws SQLException {
+        Connection conn = getConnection();
+        String query = "SELECT nombre_clave FROM espia WHERE num_empleado = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setInt(1, numEmpleado);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            return rs.getString("nombre_clave");
+        }
+        return null;
+    }
+
+    // Método para obtener el teléfono del espía
+    private static String obtenerTelefono(int numEmpleado) throws SQLException {
+        Connection conn = getConnection();
+        String query = "SELECT telefono_contacto FROM espia WHERE num_empleado = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setInt(1, numEmpleado);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            return rs.getString("telefono_contacto");
+        }
+        return null;
+    }
+
 }
