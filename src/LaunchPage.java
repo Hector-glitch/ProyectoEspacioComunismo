@@ -91,8 +91,8 @@ public class LaunchPage implements ActionListener {
                     frame.dispose(); // Cierra el frame de login
                 } else {
                     // Rediriges según el tipo de empleado
-                    if (empleado instanceof Mecanico) {
-                        Mecanico MecanicoFrame = (Mecanico) empleado;
+                    if (empleado instanceof MecanicoFrame) {
+                        MecanicoFrame MecanicoFrame = (MecanicoFrame) empleado;
                         frame.dispose();
                     } else if (empleado instanceof FisicFrame) {
                         FisicFrame FisicFrame = (FisicFrame) empleado;

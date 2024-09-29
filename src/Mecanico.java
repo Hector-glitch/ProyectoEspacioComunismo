@@ -1,139 +1,100 @@
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
 
-public class Mecanico extends Empleado implements ActionListener {
-    JFrame frame;
-    JLabel nomL, salariL, edatL, adreçaL, expL, ciutatL, sexeL, numTallerL;
-    JPanel GreyPanel;
+public class Mecanico {
     private String numeroDeTaller;
 
-    // Constructor modificado: eliminar apellido
-    public Mecanico(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String numTaller, String ciutatOfici, boolean isAdmin) {
-        super(nombre, salari, edad, direccion, anosDeExperiencia, sexo, ciutatOfici, isAdmin); // Llama al constructor de Empleado correctamente
-        this.numeroDeTaller = numTaller;
-
-        // Configuración de la ventana
-        frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("Mecànic");
-        frame.setSize(520, 420);
-        frame.setLayout(null);
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null); // Centrar el frame
-
-        GreyPanel = new JPanel();
-        GreyPanel.setBackground(Color.gray);
-        GreyPanel.setLayout(null);
-        GreyPanel.setBounds(20, 40, 200, 300);
-        frame.add(GreyPanel);
-
-        // Mostrar los datos en la interfaz
-        nomL = new JLabel("Nom: " + nombre);
-        nomL.setBounds(20, 10, 200, 20);
-        GreyPanel.add(nomL);
-
-        salariL = new JLabel("Salari: " + salari + "K"); // Aquí puedes obtener y mostrar el salario desde la base de datos si es necesario
-        salariL.setBounds(20, 30, 200, 20);
-        GreyPanel.add(salariL);
-
-        edatL = new JLabel("Edat: " + edad);
-        edatL.setBounds(20, 50, 200, 20);
-        GreyPanel.add(edatL);
-
-        adreçaL = new JLabel("Adreça: " + direccion);
-        adreçaL.setBounds(20, 70, 200, 20);
-        GreyPanel.add(adreçaL);
-
-        expL = new JLabel("Anys Exp.: " + anosDeExperiencia);
-        expL.setBounds(20, 90, 200, 20);
-        GreyPanel.add(expL);
-
-        ciutatL = new JLabel("Ciutat d'Ofici: ");
-        ciutatL.setBounds(20, 110, 200, 20);
-        GreyPanel.add(ciutatL);
-
-        sexeL = new JLabel("Sexe: " + sexo);
-        sexeL.setBounds(20, 130, 200, 20);
-        GreyPanel.add(sexeL);
-
-        numTallerL = new JLabel("Num. Taller: " + numeroDeTaller);
-        numTallerL.setBounds(20, 150, 200, 20);
-        GreyPanel.add(numTallerL);
-
-        // Botó per fitxar hora d'entrada
-        JButton entradaButton = new JButton("Fitxar entrada");
-        entradaButton.setBounds(20, 180, 120, 30); // Ajustar la posició i mida
-        GreyPanel.add(entradaButton);
-
-        // Botó per fitxar hora de sortida
-        JButton sortidaButton = new JButton("Fitxar sortida");
-        sortidaButton.setBounds(20, 220, 120, 30); // Ajustar la posició i mida
-        sortidaButton.setEnabled(false); // Comença desactivat
-        GreyPanel.add(sortidaButton);
-
-        // Etiqueta per mostrar l'hora d'entrada
-        JLabel entradaHoraLabel = new JLabel("Hora entrada:");
-        entradaHoraLabel.setBounds(20, 255, 120, 20); // Posició per la etiqueta
-        GreyPanel.add(entradaHoraLabel);
-
-        // Etiqueta que canviarà per mostrar la data i hora d'entrada
-        JLabel entradaHoraValor = new JLabel(" ");
-        entradaHoraValor.setBounds(100, 255, 200, 20); // Ajustar la posició i mida
-        GreyPanel.add(entradaHoraValor);
-
-        // Etiqueta per mostrar l'hora de sortida
-        JLabel sortidaHoraLabel = new JLabel("Hora sortida:");
-        sortidaHoraLabel.setBounds(20, 270, 120, 20); // Posició per la etiqueta
-        GreyPanel.add(sortidaHoraLabel);
-
-        // Etiqueta que canviarà per mostrar la data i hora de sortida
-        JLabel sortidaHoraValor = new JLabel(" ");
-        sortidaHoraValor.setBounds(100, 270, 200, 20); // Ajustar la posició i mida
-        GreyPanel.add(sortidaHoraValor);
-
-        frame.revalidate();
-        frame.repaint();
-
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy ");
-
-        entradaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Capturar la data i hora actual
-                LocalDateTime now = LocalDateTime.now();
-                String formattedDateTime = now.format(dateTimeFormatter);
-
-                // Actualitzar l'etiqueta amb la data i hora d'entrada
-                entradaHoraValor.setText(formattedDateTime);
-
-                // Desactivar el botó d'entrada i activar el botó de sortida
-                entradaButton.setEnabled(false);
-                sortidaButton.setEnabled(true);
-            }
-        });
-
-        sortidaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Capturar la data i hora actual
-                LocalDateTime now = LocalDateTime.now();
-                String formattedDateTime = now.format(dateTimeFormatter);
-
-                // Actualitzar l'etiqueta amb la data i hora de sortida
-                sortidaHoraValor.setText(formattedDateTime);
-
-                // Desactivar el botó de sortida i activar el botó d'entrada
-                sortidaButton.setEnabled(false);
-                entradaButton.setEnabled(true);
-            }
-        });
+    public Mecanico(String numeroDeTaller) {
+        this.numeroDeTaller = numeroDeTaller;
     }
 
-    public void actionPerformed(ActionEvent e) {
+    public void listarVehiculos() {
+        ArrayList<String> vehiculos = new ArrayList<>();
+        Connection conn = Conexio.getConnection();
+        try {
+            // Ajustar consulta según tus necesidades
+            String query = "SELECT * FROM vehiculos WHERE taller = 1"; // Puedes ajustar esto si tienes un campo de taller
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                int numeroSerie = rs.getInt("numero_serie");
+                String revision = rs.getString("revision");
+                String tipoVehiculo = rs.getString("tipo_vehiculo");
+                int maxPasajeros = rs.getInt("max_pasajeros");
+                boolean enTaller = rs.getBoolean("taller");
 
+                vehiculos.add(numeroSerie + " " + revision + " " + tipoVehiculo + " " + maxPasajeros + " " + (enTaller ? "En Taller" : "Disponible"));
+            }
+
+            if (vehiculos.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No hay vehículos registrados en este taller.");
+            } else {
+                // Escribir en el archivo
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter("vehiculos.txt"))) {
+                    for (String vehiculo : vehiculos) {
+                        writer.write(vehiculo);
+                        writer.newLine(); // Nueva línea después de cada vehículo
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Error al guardar el archivo.");
+                }
+
+                JOptionPane.showMessageDialog(null, "Vehículos guardados en vehiculos.txt");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al listar los vehículos");
+        }
+    }
+
+
+
+    public void agregarVehiculo(String numeroSerie, String revision, String tipoViniculo, String maxPasajeros, boolean enTaller) {
+        Connection conn = Conexio.getConnection();
+        try {
+            String query = "INSERT INTO vehiculos (numero_serie, revision, tipo_vehiculo, max_pasajeros, taller) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, Integer.parseInt(numeroSerie));
+            stmt.setString(2, revision);
+            stmt.setString(3, tipoViniculo);
+            stmt.setInt(4, Integer.parseInt(maxPasajeros));
+            stmt.setInt(5, enTaller ? 1 : 0);
+
+            int result = stmt.executeUpdate();
+            if (result > 0) {
+                JOptionPane.showMessageDialog(null, "Vehículo agregado correctamente");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al agregar vehículo");
+        }
+    }
+
+    public void cambiarEstadoTaller(String numeroSerie, boolean enTaller) {
+        Connection conn = Conexio.getConnection();
+        try {
+            if (numeroSerie.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Debe ingresar el número de serie");
+                return;
+            }
+            String query = "UPDATE vehiculos SET taller = ? WHERE numero_serie = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, enTaller ? 1 : 0);
+            stmt.setInt(2, Integer.parseInt(numeroSerie));
+            int result = stmt.executeUpdate();
+            if (result > 0) {
+                JOptionPane.showMessageDialog(null, "Estado del vehículo actualizado correctamente");
+            } else {
+                JOptionPane.showMessageDialog(null, "No se ha encontrado ningún vehículo con ese número de serie");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al cambiar el estado");
+        }
     }
 }

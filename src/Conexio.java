@@ -49,7 +49,7 @@ public class Conexio {
                         break;
                     case "mecanico":
                         String numTaller = obtenerTaller(rs.getInt("num_empleado"));
-                        empleado = new Mecanico(nombre, salari, edad, direccion, anosExp, sexo, numTaller, ciutatOifici, isAdmin);
+                        empleado = new MecanicoFrame(nombre, salari, edad, direccion, anosExp, sexo, numTaller, ciutatOifici, isAdmin);
                         break;
                     case "astronauta":
                         String primerVuelo = obtenerFechaPrimerVuelo(rs.getInt("num_empleado"));
