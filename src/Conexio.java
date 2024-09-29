@@ -1,6 +1,6 @@
 import java.sql.*;
 
-public class conexio {
+public class Conexio {
     private static String url = "jdbc:mysql://localhost:3306/comunismo";
     private static String user = "root";
     private static String pass = "admin";
@@ -36,32 +36,39 @@ public class conexio {
                 int edad = rs.getInt("edad");
                 String direccion = rs.getString("direccion");
                 String anosExp = rs.getString("anos_experiencia");
+                String ciutatOifici = rs.getString("ciudad_trabaja");
                 String sexo = rs.getString("sexo");
                 boolean isAdmin = rs.getInt("isAdmin") == 1; // Verifica si es admin
-                String role = determinarRolEmpleado(rs.getInt("num_empleado"), isAdmin); // Pasa isAdmin
+                String role = determinarRolEmpleado(rs.getInt("num_empleado"), isAdmin);
 
                 // Dependiendo del rol, creamos el tipo de empleado
                 switch (role) {
                     case "admin":
                         // No necesitas crear un objeto específico para el admin, solo verifica si es admin
-                        empleado = new Empleado(nombre, salari, edad, direccion, anosExp, sexo, isAdmin);
+                        empleado = new Empleado(nombre, salari, edad, direccion, anosExp, sexo, ciutatOifici, isAdmin);
                         break;
                     case "mecanico":
                         String numTaller = obtenerTaller(rs.getInt("num_empleado"));
-                        empleado = new Mecanico(nombre, salari, edad, direccion, anosExp, sexo, numTaller, isAdmin);
+                        empleado = new Mecanico(nombre, salari, edad, direccion, anosExp, sexo, numTaller, ciutatOifici, isAdmin);
                         break;
                     case "astronauta":
                         String primerVuelo = obtenerFechaPrimerVuelo(rs.getInt("num_empleado"));
-                        empleado = new Astronauta(nombre, salari, edad, direccion, anosExp, sexo, primerVuelo, isAdmin);
+                        String[] misionesYRango = obtenerMisionesAstronauta(rs.getInt("num_empleado"));
+                        if (misionesYRango != null) {
+                            int missionsOK = Integer.parseInt(misionesYRango[0]);
+                            int missionsKO = Integer.parseInt(misionesYRango[1]);
+                            String rangMilitar = misionesYRango[2];
+                        empleado = new Astronauta(nombre, salari, edad, direccion, anosExp, sexo, primerVuelo, rangMilitar, missionsKO, missionsOK, ciutatOifici, isAdmin);
+                        }
                         break;
                     case "espia":
                         String nombreClave = obtenerNombreClave(rs.getInt("num_empleado"));
                         String telefono = obtenerTelefono(rs.getInt("num_empleado"));
-                        empleado = new Espia(nombre, salari, edad, direccion, anosExp, sexo, nombreClave, telefono, isAdmin);
+                        empleado = new Espia(nombre, salari, edad, direccion, anosExp, sexo, nombreClave, telefono, ciutatOifici, isAdmin);
                         break;
                     case "fisico":
                         String titolAcademic = obtenerTitulacionAcademica(rs.getInt("num_empleado"));
-                        empleado = new FisicFrame(nombre, salari, edad, direccion, anosExp, sexo, titolAcademic, isAdmin);
+                        empleado = new FisicFrame(nombre, salari, edad, direccion, anosExp, sexo, titolAcademic, ciutatOifici, isAdmin);
                         break;
 
                     default:
@@ -176,5 +183,24 @@ public class conexio {
         }
         return null;
     }
+
+    private static String[] obtenerMisionesAstronauta(int numEmpleado) throws SQLException {
+        Connection conn = getConnection();
+        String query = "SELECT misiones_ok, misiones_ko, rang_militar FROM astronauta WHERE num_empleado = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setInt(1, numEmpleado);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            int misionesOk = rs.getInt("misiones_ok");
+            int misionesKo = rs.getInt("misiones_ko");
+            String rangMilitar = rs.getString("rang_militar");
+
+            // Retornamos los valores en un array de String
+            return new String[]{String.valueOf(misionesOk), String.valueOf(misionesKo), rangMilitar};
+        }
+        return null; // Si no se encuentran datos
+    }
+
 
 }

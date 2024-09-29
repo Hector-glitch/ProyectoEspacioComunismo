@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Mecanico extends Empleado implements ActionListener {
     JFrame frame;
@@ -10,8 +12,8 @@ public class Mecanico extends Empleado implements ActionListener {
     private String numeroDeTaller;
 
     // Constructor modificado: eliminar apellido
-    public Mecanico(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String numTaller, boolean isAdmin) {
-        super(nombre, salari, edad, direccion, anosDeExperiencia, sexo, isAdmin); // Llama al constructor de Empleado correctamente
+    public Mecanico(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String numTaller, String ciutatOfici, boolean isAdmin) {
+        super(nombre, salari, edad, direccion, anosDeExperiencia, sexo, ciutatOfici, isAdmin); // Llama al constructor de Empleado correctamente
         this.numeroDeTaller = numTaller;
 
         // Configuración de la ventana
@@ -34,7 +36,7 @@ public class Mecanico extends Empleado implements ActionListener {
         nomL.setBounds(20, 10, 200, 20);
         GreyPanel.add(nomL);
 
-        salariL = new JLabel("Salari: " + salari); // Aquí puedes obtener y mostrar el salario desde la base de datos si es necesario
+        salariL = new JLabel("Salari: " + salari + "K"); // Aquí puedes obtener y mostrar el salario desde la base de datos si es necesario
         salariL.setBounds(20, 30, 200, 20);
         GreyPanel.add(salariL);
 
@@ -62,8 +64,73 @@ public class Mecanico extends Empleado implements ActionListener {
         numTallerL.setBounds(20, 150, 200, 20);
         GreyPanel.add(numTallerL);
 
+        // Botó per fitxar hora d'entrada
+        JButton entradaButton = new JButton("Fitxar entrada");
+        entradaButton.setBounds(20, 180, 120, 30); // Ajustar la posició i mida
+        GreyPanel.add(entradaButton);
+
+        // Botó per fitxar hora de sortida
+        JButton sortidaButton = new JButton("Fitxar sortida");
+        sortidaButton.setBounds(20, 220, 120, 30); // Ajustar la posició i mida
+        sortidaButton.setEnabled(false); // Comença desactivat
+        GreyPanel.add(sortidaButton);
+
+        // Etiqueta per mostrar l'hora d'entrada
+        JLabel entradaHoraLabel = new JLabel("Hora entrada:");
+        entradaHoraLabel.setBounds(20, 255, 120, 20); // Posició per la etiqueta
+        GreyPanel.add(entradaHoraLabel);
+
+        // Etiqueta que canviarà per mostrar la data i hora d'entrada
+        JLabel entradaHoraValor = new JLabel(" ");
+        entradaHoraValor.setBounds(100, 255, 200, 20); // Ajustar la posició i mida
+        GreyPanel.add(entradaHoraValor);
+
+        // Etiqueta per mostrar l'hora de sortida
+        JLabel sortidaHoraLabel = new JLabel("Hora sortida:");
+        sortidaHoraLabel.setBounds(20, 270, 120, 20); // Posició per la etiqueta
+        GreyPanel.add(sortidaHoraLabel);
+
+        // Etiqueta que canviarà per mostrar la data i hora de sortida
+        JLabel sortidaHoraValor = new JLabel(" ");
+        sortidaHoraValor.setBounds(100, 270, 200, 20); // Ajustar la posició i mida
+        GreyPanel.add(sortidaHoraValor);
+
         frame.revalidate();
         frame.repaint();
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy ");
+
+        entradaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Capturar la data i hora actual
+                LocalDateTime now = LocalDateTime.now();
+                String formattedDateTime = now.format(dateTimeFormatter);
+
+                // Actualitzar l'etiqueta amb la data i hora d'entrada
+                entradaHoraValor.setText(formattedDateTime);
+
+                // Desactivar el botó d'entrada i activar el botó de sortida
+                entradaButton.setEnabled(false);
+                sortidaButton.setEnabled(true);
+            }
+        });
+
+        sortidaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Capturar la data i hora actual
+                LocalDateTime now = LocalDateTime.now();
+                String formattedDateTime = now.format(dateTimeFormatter);
+
+                // Actualitzar l'etiqueta amb la data i hora de sortida
+                sortidaHoraValor.setText(formattedDateTime);
+
+                // Desactivar el botó de sortida i activar el botó d'entrada
+                sortidaButton.setEnabled(false);
+                entradaButton.setEnabled(true);
+            }
+        });
     }
 
     public void actionPerformed(ActionEvent e) {

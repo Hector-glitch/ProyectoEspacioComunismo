@@ -1,59 +1,91 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 
 public class LaunchPage implements ActionListener {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new LaunchPage();
+        });
+    }
+
     JFrame frame;
-    JButton myButton;
+    JButton LoginButton;
     JLabel UserLabel;
     JTextField UserTextF;
     JLabel ContraLabel;
     JTextField ContraTextF;
+    JButton Button;
 
     LaunchPage() {
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Programa Espacial URSS");
         frame.setSize(420, 420);
-        frame.setLayout(null);
-        frame.setVisible(true);
         frame.setLocationRelativeTo(null); // Centrar el frame
 
-        UserLabel = new JLabel("User");
-        UserLabel.setBounds(100, 80, 200, 40);
-        frame.add(UserLabel);
+        ImageIcon icon = new ImageIcon("src/Imatges/CCCP.png");
+        Image scaledIcon = icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+        frame.setIconImage(icon.getImage());
+
+        // Añadir el panel con la imagen de fondo
+        BackgroundPanel backgroundPanel = new BackgroundPanel();
+        backgroundPanel.setLayout(null);
+        frame.add(backgroundPanel);
+
+        // Crear un panel para los componentes del login
+        JPanel loginPanel = new JPanel();
+        loginPanel.setLayout(null);
+        loginPanel.setBounds(50, 60, 320, 280); // Cambia el tamaño y la posición según sea necesario
+        loginPanel.setOpaque(true); // Hacer el panel semitransparente
+        // Establecer un color de fondo semitransparente
+        loginPanel.setBackground(new Color(255, 255, 255, 200)); // Color blanco con 200 de opacidad
+
+        // Crear y añadir componentes al panel de login
+        UserLabel = new JLabel("Usuari");
+        UserLabel.setBounds(20, 20, 200, 40);
+        loginPanel.add(UserLabel);
 
         UserTextF = new JTextField();
-        UserTextF.setBounds(100, 110, 200, 30);
-        frame.add(UserTextF);
+        UserTextF.setBounds(20, 60, 280, 30);
+        loginPanel.add(UserTextF);
 
         ContraLabel = new JLabel("Contrasenya");
-        ContraLabel.setBounds(100, 130, 200, 40);
-        frame.add(ContraLabel);
+        ContraLabel.setBounds(20, 100, 200, 40);
+        loginPanel.add(ContraLabel);
 
         ContraTextF = new JTextField();
-        ContraTextF.setBounds(100, 160, 200, 30);
-        frame.add(ContraTextF);
+        ContraTextF.setBounds(20, 140, 280, 30);
+        loginPanel.add(ContraTextF);
 
-        myButton = new JButton("Login");
-        myButton.setBounds(100, 200, 200, 40);
-        myButton.setFocusable(false);
-        myButton.addActionListener(this);
-        frame.add(myButton);
+        LoginButton = new JButton("Login");
+        LoginButton.setBounds(20, 180, 280, 40);
+        LoginButton.setFocusable(false);
+        LoginButton.addActionListener(this);
+        loginPanel.add(LoginButton);
 
+        // Añadir el panel de login al panel de fondo
+        backgroundPanel.add(loginPanel);
+
+        frame.setVisible(true);
         frame.revalidate();
         frame.repaint();
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == myButton) {
+        if (e.getSource() == LoginButton) {
             String username = UserTextF.getText();
             String password = ContraTextF.getText();
 
-            Empleado empleado = conexio.autenticarUsuario(username, password);
+            Empleado empleado = Conexio.autenticarUsuario(username, password);
 
             if (empleado != null) {
-                // Si el empleado es administrador, abre el frame de admin
+                // Manejar el login del usuario
                 if (empleado.isAdmin()) {
                     new Admin(); // Abre el frame de administrador
                     frame.dispose(); // Cierra el frame de login
@@ -72,10 +104,30 @@ public class LaunchPage implements ActionListener {
                         Espia EspiaFrame = (Espia) empleado;
                         frame.dispose();
                     }
-                    // Añadir más tipos de empleados
                 }
             } else {
-                JOptionPane.showMessageDialog(frame, "Credenciales incorrectas");
+                JOptionPane.showMessageDialog(frame, "Credencials Incorrectes");
+            }
+        }
+    }
+
+    // Clase que representa el panel con la imagen de fondo
+    class BackgroundPanel extends JPanel {
+        private BufferedImage backgroundImage;
+
+        public BackgroundPanel() {
+            try {
+                backgroundImage = ImageIO.read(new File("src/Imatges/LoginBK.jpg")); // Cambia esto a la ruta de tu imagen
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
             }
         }
     }

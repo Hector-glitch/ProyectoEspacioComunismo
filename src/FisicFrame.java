@@ -24,8 +24,8 @@ public class FisicFrame extends Empleado implements ActionListener {
     HashMap<String, String> distancias;
     private String titolAcademic;
 
-    public FisicFrame(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String titolAcademic, boolean isAdmin) {
-        super(nombre, salari, edad, direccion, anosDeExperiencia, sexo, isAdmin);
+    public FisicFrame(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String titolAcademic, String ciutatOifici, boolean isAdmin) {
+        super(nombre, salari, edad, direccion, anosDeExperiencia, sexo, ciutatOifici, isAdmin);
         this.titolAcademic = titolAcademic;
         // Inicialitzar el mapa de distàncies
         distancias = new HashMap<>();
@@ -56,7 +56,7 @@ public class FisicFrame extends Empleado implements ActionListener {
         nomL.setBounds(20, 10, 80, 20);
         GreyPanel.add(nomL);
 
-        salariL = new JLabel("Salari: " + salari);
+        salariL = new JLabel("Salari: " + salari + "K");
         salariL.setBounds(20, 30, 80, 20);
         GreyPanel.add(salariL);
 
@@ -72,7 +72,7 @@ public class FisicFrame extends Empleado implements ActionListener {
         expL.setBounds(20, 90, 80, 20);
         GreyPanel.add(expL);
 
-        ciutatL = new JLabel("Ciutat d'Ofici: ");
+        ciutatL = new JLabel("Ciutat d'Ofici: " + ciutatOifici);
         ciutatL.setBounds(20, 110, 100, 20);
         GreyPanel.add(ciutatL);
 
@@ -215,7 +215,7 @@ public class FisicFrame extends Empleado implements ActionListener {
                 // Calcular i mostrar el cost per recórrer l'àrea del planeta
                 double cost = Fisic.CalcCostRecorre(area);
                 if (cost != -1) {
-                    costArea.setText("Cost per recórrer: " + decimalFormat.format(cost) + " rubles");
+                    costArea.setText("Cost per recórrer: " + decimalFormat.format(cost) + " ₽");
                 } else {
                     costArea.setText(" ");
                 }

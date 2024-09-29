@@ -2,84 +2,86 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 
 public class Espia extends Empleado {
     JFrame frame;
     JLabel NomClauL;
     JLabel TelefonL;
-    JPanel GreyPanel;
-    JPanel AccioPanel;
-    JTextField mensajeField;
-    JLabel mensajeEncriptadoLabel;
+    JTextField missatgeField;
+    JLabel missatgeEncriptat;
+    JLabel EncriptarL;
 
     private String nombreEnClave;
     private String telefonoContacto;
 
-    Espia (String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String nombreClave, String telefono, boolean isAdmin){
-        super(nombre, salari, edad, direccion, anosDeExperiencia, sexo, isAdmin);
+    Espia(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String nombreClave, String telefono, String ciutatOifici, boolean isAdmin) {
+        super(nombre, salari, edad, direccion, anosDeExperiencia, sexo, ciutatOifici, isAdmin);
         nombreEnClave = nombreClave;
         telefonoContacto = telefono;
 
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Espia");
-        frame.setSize(600, 420); // Ajusta el tamaño para acomodar el nuevo panel
-        frame.setLayout(null);
-        frame.setVisible(true);
+        frame.setSize(375, 420);
         frame.setLocationRelativeTo(null); // Centrar el frame
 
-        // Panel gris
-        GreyPanel = new JPanel();
-        GreyPanel.setBackground(Color.gray);
-        GreyPanel.setLayout(null);
-        GreyPanel.setBounds(20, 40, 200, 300);
-        frame.add(GreyPanel);
+        // Añadir el panel con la imagen de fondo
+        BackgroundPanel backgroundPanel = new BackgroundPanel();
+        backgroundPanel.setLayout(null);
+        frame.add(backgroundPanel);
 
-        // Aquí solo deberías definir el panel una vez y no duplicarlo.
+        // Crear un panel para los componentes
+        JPanel greyPanel = new JPanel();
+        greyPanel.setLayout(null);  // Cambiar a null layout para posicionar manualmente los componentes
+        greyPanel.setBounds(20, 40, 320, 300); // Ajustar el tamaño y posición
+        greyPanel.setOpaque(true); // Hacer el panel semitransparente
+        greyPanel.setBackground(new Color(192, 177, 177, 180)); // Color blanco con 200 de opacidad
+        backgroundPanel.add(greyPanel);
 
+        // Etiquetas para nombre en clave y teléfono
         NomClauL = new JLabel("Nom en clau: " + nombreEnClave);
-        NomClauL.setBounds(20,10,160,20); // Ajustado el ancho para que se vea el texto completo
-        GreyPanel.add(NomClauL);
+        NomClauL.setBounds(20, 10, 200, 20);
+        greyPanel.add(NomClauL);
 
         TelefonL = new JLabel("Telefon de contacte: " + telefonoContacto);
-        TelefonL.setBounds(20, 40, 160, 20);
-        GreyPanel.add(TelefonL);
+        TelefonL.setBounds(20, 30, 200, 20);
+        greyPanel.add(TelefonL);
 
-        // Panel de acción
-        AccioPanel = new JPanel();
-        AccioPanel.setBackground(Color.lightGray);
-        AccioPanel.setLayout(null);
-        AccioPanel.setBounds(240, 40, 300, 300);
-        frame.add(AccioPanel);
+        EncriptarL = new JLabel("Encriptar Missatge");
+        EncriptarL.setBounds(20, 60, 200, 20);
+        EncriptarL.setFont(new Font("Arial", Font.BOLD, 12));
+        greyPanel.add(EncriptarL);
 
         // Campo de texto para el mensaje
-        mensajeField = new JTextField();
-        mensajeField.setBounds(20, 20, 260, 30);
-        AccioPanel.add(mensajeField);
+        missatgeField = new JTextField();
+        missatgeField.setBounds(20, 80, 260, 30);
+        greyPanel.add(missatgeField);
 
         // Botón para enviar el mensaje
-        JButton enviarButton = new JButton("Enviar");
-        enviarButton.setBounds(20, 60, 100, 30);
-        AccioPanel.add(enviarButton);
+        JButton enviarButton = new JButton("Encriptar");
+        enviarButton.setBounds(20, 120, 100, 30);
+        greyPanel.add(enviarButton);
 
         // Label para mostrar el mensaje encriptado
-        mensajeEncriptadoLabel = new JLabel("Mensaje encriptado: ");
-        mensajeEncriptadoLabel.setBounds(20, 100, 260, 30);
-        AccioPanel.add(mensajeEncriptadoLabel);
-
+        missatgeEncriptat = new JLabel("Missatge encriptat: ");
+        missatgeEncriptat.setBounds(20, 160, 260, 30);
+        greyPanel.add(missatgeEncriptat);
 
         // Acción al pulsar el botón
         enviarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String mensaje = mensajeField.getText();
+                String mensaje = missatgeField.getText();
                 String encriptado = enviarMensajeEncriptado(mensaje);
-                mensajeEncriptadoLabel.setText("Mensaje encriptado: " + encriptado);
+                missatgeEncriptat.setText("Missatge encriptat: " + encriptado);
             }
         });
 
-        frame.setVisible(true); // Mover setVisible al final
+        frame.setVisible(true);
         frame.revalidate();
         frame.repaint();
     }
@@ -88,6 +90,25 @@ public class Espia extends Empleado {
         return mensaje.replaceAll("[qwrtypsdfghjklzxcvbnmñQWRTYPSDFGHJKLZXCVBNMÑ]", "");
     }
 
-    public static void main(String[] args) {
+    // Clase que representa el panel con la imagen de fondo
+    class BackgroundPanel extends JPanel {
+        private BufferedImage backgroundImage;
+
+        public BackgroundPanel() {
+            try {
+                // Cargar la imagen de fondo
+                backgroundImage = ImageIO.read(new File("src/Imatges/EspiaBK.jpg")); // Cambia esto a la ruta de tu imagen
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+            }
+        }
     }
 }

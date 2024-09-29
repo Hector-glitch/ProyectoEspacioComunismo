@@ -11,10 +11,6 @@ public class Admin {
     JScrollPane scrollPane;
     JButton addButton, editButton, deleteButton;
 
-    public static void main(String[] args) {
-        new Admin();
-    }
-
     Admin() {
         // Crear el frame
         frame = new JFrame();
@@ -23,6 +19,8 @@ public class Admin {
         frame.setSize(600, 400);
         frame.setLayout(null);
         frame.setLocationRelativeTo(null);
+        ImageIcon icon = new ImageIcon("src/Imatges/a.png"); // Cargar la imagen
+        frame.setIconImage(icon.getImage()); // Establecer el icono
 
         // Tabla para mostrar espías
         String[] columnNames = {"Número Empleado", "Usuario", "Nombre Clave", "Teléfono Contacto"};
@@ -74,7 +72,7 @@ public class Admin {
 
     // Método para cargar espías desde la base de datos a la tabla
     private void cargarEspias() {
-        Connection conn = conexio.getConnection();
+        Connection conn = Conexio.getConnection();
         String query = "SELECT empleados.num_empleado, empleados.username, espia.nombre_clave, espia.telefono_contacto " +
                 "FROM empleados INNER JOIN espia ON empleados.num_empleado = espia.num_empleado";
 
@@ -117,14 +115,20 @@ public class Admin {
 
         int option = JOptionPane.showConfirmDialog(null, message, "Añadir Espía", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            String username = usernameField.getText();
-            String password = passwordField.getText();
-            String nombreClave = nombreClaveField.getText();
-            String telefono = telefonoField.getText();
+            String username = usernameField.getText().trim(); // Usar trim para eliminar espacios
+            String password = passwordField.getText().trim();
+            String nombreClave = nombreClaveField.getText().trim();
+            String telefono = telefonoField.getText().trim();
+
+            // Validar que no haya campos vacíos
+            if (username.isEmpty() || password.isEmpty() || nombreClave.isEmpty() || telefono.isEmpty()) {
+                JOptionPane.showMessageDialog(frame, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return; // Salir del método si hay campos vacíos
+            }
 
             // Insertar en la base de datos
             try {
-                Connection conn = conexio.getConnection();
+                Connection conn = Conexio.getConnection();
                 String insertEmpleadoQuery = "INSERT INTO empleados (username, password) VALUES (?, ?)";
                 PreparedStatement psEmpleado = conn.prepareStatement(insertEmpleadoQuery, Statement.RETURN_GENERATED_KEYS);
                 psEmpleado.setString(1, username);
@@ -183,13 +187,19 @@ public class Admin {
 
         int option = JOptionPane.showConfirmDialog(null, message, "Editar Espía", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            String newUsername = usernameField.getText();
-            String newPassword = passwordField.getText();
-            String newNombreClave = nombreClaveField.getText();
-            String newTelefono = telefonoField.getText();
+            String newUsername = usernameField.getText().trim();
+            String newPassword = passwordField.getText().trim();
+            String newNombreClave = nombreClaveField.getText().trim();
+            String newTelefono = telefonoField.getText().trim();
+
+            // Validar que no haya campos vacíos
+            if (newUsername.isEmpty() || newNombreClave.isEmpty() || newTelefono.isEmpty()) {
+                JOptionPane.showMessageDialog(frame, "Por favor, complete todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
+                return; // Salir del método si hay campos vacíos
+            }
 
             try {
-                Connection conn = conexio.getConnection();
+                Connection conn = Conexio.getConnection();
                 // Actualizar tabla empleados
                 String updateEmpleadoQuery = "UPDATE empleados SET username = ? " + (newPassword.isEmpty() ? "" : ", password = ?") + " WHERE num_empleado = ?";
                 PreparedStatement psEmpleado = conn.prepareStatement(updateEmpleadoQuery);
@@ -218,6 +228,7 @@ public class Admin {
         }
     }
 
+
     // Método para borrar un espía
     private void borrarEspia() {
         int selectedRow = table.getSelectedRow();
@@ -231,7 +242,7 @@ public class Admin {
         int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea eliminar este espía?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             try {
-                Connection conn = conexio.getConnection();
+                Connection conn = Conexio.getConnection();
                 String deleteEspiaQuery = "DELETE FROM espia WHERE num_empleado = ?";
                 PreparedStatement psEspia = conn.prepareStatement(deleteEspiaQuery);
                 psEspia.setInt(1, numEmpleado);

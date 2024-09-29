@@ -3,6 +3,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 
 public class Astronauta extends Empleado {
     JFrame frame;
@@ -13,66 +17,78 @@ public class Astronauta extends Empleado {
     JLabel rangL;
     JLabel missionsOKL;
     JLabel missionsKOL;
-    JPanel GreyPanel;
-    JPanel AccioPanel;
     JTextField mensajeField;
     JTextArea mensajeEncriptadoArea; // Cambiado a JTextArea
     JLabel coordenadasLabel;
 
     private String fechaPrimerVuelo;
+    private int missionsOK;
+    private int missionsKO;
+    private String rangMilitar;
 
     // Constructor modificado: quitar apellido
-    public Astronauta(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String fechaPrimerVuelo, boolean isAdmin) {
-        super(nombre, edad, salari, direccion, anosDeExperiencia, sexo, isAdmin);
+    public Astronauta(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String fechaPrimerVuelo,
+                      String rangMili, int missionsOK, int missionsKO, String ciutatOifici, boolean isAdmin) {
+        super(nombre, edad, salari, direccion, anosDeExperiencia, sexo, ciutatOifici, isAdmin);
         this.fechaPrimerVuelo = fechaPrimerVuelo;
+        this.missionsOK = missionsOK;
+        this.missionsKO = missionsKO;
+        this.rangMilitar = rangMili;
 
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Astronauta");
         frame.setSize(600, 420);
-        frame.setLayout(null);
-        frame.setVisible(true);
         frame.setLocationRelativeTo(null); // Centrar el frame
 
-        GreyPanel = new JPanel();
-        GreyPanel.setBackground(Color.gray);
-        GreyPanel.setLayout(null);
-        GreyPanel.setBounds(20,40,200,300);
-        frame.add(GreyPanel);
+        // Añadir el panel con la imagen de fondo
+        BackgroundPanel backgroundPanel = new BackgroundPanel();
+        backgroundPanel.setLayout(null);
+        frame.add(backgroundPanel);
 
+        // Crear un panel gris para los datos del astronauta
+        JPanel greyPanel = new JPanel();
+        greyPanel.setLayout(null);
+        greyPanel.setBounds(20, 40, 200, 300);
+        greyPanel.setOpaque(true); // Hacer el panel semitransparente
+        greyPanel.setBackground(new Color(255, 255, 255, 200)); // Color blanco con 200 de opacidad
+        backgroundPanel.add(greyPanel);
+
+        // Etiquetas para la información del astronauta
         nomL = new JLabel("Nom: " + nombre);
-        nomL.setBounds(20,10,80,20);
-        GreyPanel.add(nomL);
+        nomL.setBounds(20, 10, 100, 20);
+        greyPanel.add(nomL);
 
         edatL = new JLabel("Edad: " + edad);
-        edatL.setBounds(20,30,80,20);
-        GreyPanel.add(edatL);
+        edatL.setBounds(20, 30, 100, 20);
+        greyPanel.add(edatL);
 
         adreçaL = new JLabel("Adreça: " + direccion);
-        adreçaL.setBounds(20,50,80,20);
-        GreyPanel.add(adreçaL);
+        adreçaL.setBounds(20, 50, 100, 20);
+        greyPanel.add(adreçaL);
 
-        sexeL = new JLabel("Sexe: " +sexo);
-        sexeL.setBounds(20,70,80,20);
-        GreyPanel.add(sexeL);
+        sexeL = new JLabel("Sexe: " + sexo);
+        sexeL.setBounds(20, 70, 100, 20);
+        greyPanel.add(sexeL);
 
-        rangL = new JLabel ("Rang Militar: ");
-        rangL.setBounds(20,90,80,20);
-        GreyPanel.add(rangL);
+        rangL = new JLabel("Rang Militar: " + rangMili);
+        rangL.setBounds(20, 90, 100, 20);
+        greyPanel.add(rangL);
 
-        missionsOKL = new JLabel ("Missions OK: ");
-        missionsOKL.setBounds(20,110,80,20);
-        GreyPanel.add(missionsOKL);
+        missionsOKL = new JLabel("Missions OK: " + missionsOK);
+        missionsOKL.setBounds(20, 110, 100, 20);
+        greyPanel.add(missionsOKL);
 
-        missionsKOL = new JLabel ("Missions KO: ");
-        missionsKOL.setBounds(20,130,80,20);
-        GreyPanel.add(missionsKOL);
+        missionsKOL = new JLabel("Missions KO: " + missionsKO);
+        missionsKOL.setBounds(20, 130, 100, 20);
+        greyPanel.add(missionsKOL);
 
-        AccioPanel = new JPanel();
-        AccioPanel.setBackground(Color.lightGray);
+        // Crear el panel de acción
+        JPanel AccioPanel = new JPanel();
         AccioPanel.setLayout(null);
         AccioPanel.setBounds(240, 40, 300, 300);
-        frame.add(AccioPanel);
+        AccioPanel.setOpaque(true); // Hacer el panel semitransparente
+        backgroundPanel.add(AccioPanel);
 
         mensajeField = new JTextField();
         mensajeField.setBounds(20, 20, 260, 30);
@@ -83,10 +99,10 @@ public class Astronauta extends Empleado {
         AccioPanel.add(enviarButton);
 
         mensajeEncriptadoArea = new JTextArea();
-        mensajeEncriptadoArea.setBounds(20, 100, 260, 100); // Se ajusta el tamaño para mostrar varias líneas
-        mensajeEncriptadoArea.setLineWrap(true); // Habilitar el ajuste de línea
-        mensajeEncriptadoArea.setWrapStyleWord(true); // Ajustar líneas completas
-        mensajeEncriptadoArea.setEditable(false); // Hacer que el área de texto sea solo de lectura
+        mensajeEncriptadoArea.setBounds(20, 100, 260, 50);
+        mensajeEncriptadoArea.setLineWrap(true);
+        mensajeEncriptadoArea.setWrapStyleWord(true);
+        mensajeEncriptadoArea.setEditable(false);
         mensajeEncriptadoArea.setOpaque(false);
         mensajeEncriptadoArea.setBorder(null);
         AccioPanel.add(mensajeEncriptadoArea);
@@ -101,15 +117,12 @@ public class Astronauta extends Empleado {
         });
 
         JButton generarCoordenadasButton = new JButton("Generar Coordenadas");
-        generarCoordenadasButton.setBounds(20, 210, 160, 30);
+        generarCoordenadasButton.setBounds(20, 150, 160, 30);
         AccioPanel.add(generarCoordenadasButton);
 
         coordenadasLabel = new JLabel("Coordenadas: ");
-        coordenadasLabel.setBounds(20, 250, 260, 30);
+        coordenadasLabel.setBounds(20, 180, 260, 30);
         AccioPanel.add(coordenadasLabel);
-
-        frame.revalidate();
-        frame.repaint();
 
         generarCoordenadasButton.addActionListener(new ActionListener() {
             @Override
@@ -133,5 +146,27 @@ public class Astronauta extends Empleado {
 
     private static String enviarMensajeEncriptado(String mensaje) {
         return mensaje.replaceAll("[aeiouAEIOUäëïöüÄËÏÖÜáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙ]", "");
+    }
+
+    // Clase que representa el panel con la imagen de fondo
+    class BackgroundPanel extends JPanel {
+        private BufferedImage backgroundImage;
+
+        public BackgroundPanel() {
+            try {
+                // Cargar la imagen de fondo
+                backgroundImage = ImageIO.read(new File("src/Imatges/AstroBK.jpg")); // Cambia esto a la ruta de tu imagen
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+            }
+        }
     }
 }
