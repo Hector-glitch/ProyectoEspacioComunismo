@@ -53,21 +53,27 @@ public class LaunchPage implements ActionListener {
             Empleado empleado = conexio.autenticarUsuario(username, password);
 
             if (empleado != null) {
-                // Aquí rediriges según el tipo de empleado
-                if (empleado instanceof Mecanico) {
-                    Mecanico MecanicoFrame = (Mecanico) empleado;
-                    frame.dispose();
-                } else if (empleado instanceof FisicFrame) {
-                    FisicFrame FisicFrame = (FisicFrame) empleado;
-                    frame.dispose();
-                } else if (empleado instanceof Astronauta) {
-                    Astronauta AstronautaFrame = (Astronauta) empleado;
-                    frame.dispose();
-                } else if (empleado instanceof Espia) {
-                    Espia EspiaFrame = (Espia) empleado;
-                    frame.dispose();
+                // Si el empleado es administrador, abre el frame de admin
+                if (empleado.isAdmin()) {
+                    new Admin(); // Abre el frame de administrador
+                    frame.dispose(); // Cierra el frame de login
+                } else {
+                    // Rediriges según el tipo de empleado
+                    if (empleado instanceof Mecanico) {
+                        Mecanico MecanicoFrame = (Mecanico) empleado;
+                        frame.dispose();
+                    } else if (empleado instanceof FisicFrame) {
+                        FisicFrame FisicFrame = (FisicFrame) empleado;
+                        frame.dispose();
+                    } else if (empleado instanceof Astronauta) {
+                        Astronauta AstronautaFrame = (Astronauta) empleado;
+                        frame.dispose();
+                    } else if (empleado instanceof Espia) {
+                        Espia EspiaFrame = (Espia) empleado;
+                        frame.dispose();
+                    }
+                    // Añadir más tipos de empleados
                 }
-                // Añadir más tipos de empleados
             } else {
                 JOptionPane.showMessageDialog(frame, "Credenciales incorrectas");
             }

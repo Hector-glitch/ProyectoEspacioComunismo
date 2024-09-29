@@ -37,30 +37,33 @@ public class conexio {
                 String direccion = rs.getString("direccion");
                 String anosExp = rs.getString("anos_experiencia");
                 String sexo = rs.getString("sexo");
-                int isAdmin = rs.getInt("isAdmin");
-                String role = determinarRolEmpleado(rs.getInt("num_empleado"));
+                boolean isAdmin = rs.getInt("isAdmin") == 1; // Verifica si es admin
+                String role = determinarRolEmpleado(rs.getInt("num_empleado"), isAdmin); // Pasa isAdmin
 
                 // Dependiendo del rol, creamos el tipo de empleado
                 switch (role) {
+                    case "admin":
+                        // No necesitas crear un objeto específico para el admin, solo verifica si es admin
+                        empleado = new Empleado(nombre, salari, edad, direccion, anosExp, sexo, isAdmin);
+                        break;
                     case "mecanico":
                         String numTaller = obtenerTaller(rs.getInt("num_empleado"));
-                        empleado = new Mecanico(nombre, salari, edad, direccion, anosExp, sexo, numTaller);
+                        empleado = new Mecanico(nombre, salari, edad, direccion, anosExp, sexo, numTaller, isAdmin);
                         break;
                     case "astronauta":
                         String primerVuelo = obtenerFechaPrimerVuelo(rs.getInt("num_empleado"));
-                        empleado = new Astronauta(nombre, salari, edad, direccion, anosExp, sexo, primerVuelo);
+                        empleado = new Astronauta(nombre, salari, edad, direccion, anosExp, sexo, primerVuelo, isAdmin);
                         break;
                     case "espia":
                         String nombreClave = obtenerNombreClave(rs.getInt("num_empleado"));
                         String telefono = obtenerTelefono(rs.getInt("num_empleado"));
-                        empleado = new Espia(nombre, salari, edad, direccion, anosExp, sexo, nombreClave, telefono);
+                        empleado = new Espia(nombre, salari, edad, direccion, anosExp, sexo, nombreClave, telefono, isAdmin);
                         break;
-                    case "fisico":  // Nueva condición para Fisico
+                    case "fisico":
                         String titolAcademic = obtenerTitulacionAcademica(rs.getInt("num_empleado"));
-                        empleado = new FisicFrame(nombre, salari, edad, direccion, anosExp, sexo, titolAcademic);
+                        empleado = new FisicFrame(nombre, salari, edad, direccion, anosExp, sexo, titolAcademic, isAdmin);
                         break;
 
-                    // Añadir más casos según los roles
                     default:
                         System.out.println("Rol no encontrado");
                 }
@@ -73,21 +76,29 @@ public class conexio {
         return empleado;
     }
 
+
+
     // Método auxiliar para determinar el rol del empleado (ejemplo para obtener rol por tabla)
-    private static String determinarRolEmpleado(int numEmpleado) throws SQLException {
-        // Consultamos las otras tablas para ver a qué rol pertenece
+    private static String determinarRolEmpleado(int numEmpleado, boolean isAdmin) throws SQLException {
+        // Si el empleado es administrador, retornar "admin"
+        if (isAdmin) {
+            return "admin";
+        }
+
+        // Consultamos las otras tablas para ver a qué rol pertenece si no es admin
         Connection conn = getConnection();
         String query = "SELECT 'mecanico' AS rol FROM mecanico WHERE num_empleado = ? " +
                 "UNION ALL " +
                 "SELECT 'astronauta' AS rol FROM astronauta WHERE num_empleado = ? " +
                 "UNION ALL " +
-                "SELECT 'espia' AS rol FROM espia WHERE num_empleado = ? " + // Cambiado a num_empleado
+                "SELECT 'espia' AS rol FROM espia WHERE num_empleado = ? " +
                 "UNION ALL " +
                 "SELECT 'fisico' AS rol FROM fisico WHERE num_empleado = ? ";
+
         PreparedStatement stmt = conn.prepareStatement(query);
         stmt.setInt(1, numEmpleado);
         stmt.setInt(2, numEmpleado);
-        stmt.setInt(3, numEmpleado); // Cambiado a num_empleado
+        stmt.setInt(3, numEmpleado);
         stmt.setInt(4, numEmpleado);
         ResultSet rs = stmt.executeQuery();
 
@@ -96,6 +107,7 @@ public class conexio {
         }
         return "desconocido";
     }
+
 
     // Método para obtener el taller del mecánico
     private static String obtenerTaller(int numEmpleado) throws SQLException {

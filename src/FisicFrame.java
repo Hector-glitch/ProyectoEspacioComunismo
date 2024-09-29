@@ -24,8 +24,8 @@ public class FisicFrame extends Empleado implements ActionListener {
     HashMap<String, String> distancias;
     private String titolAcademic;
 
-    public FisicFrame(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String titolAcademic) {
-        super(nombre, salari, edad, direccion, anosDeExperiencia, sexo);
+    public FisicFrame(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String titolAcademic, boolean isAdmin) {
+        super(nombre, salari, edad, direccion, anosDeExperiencia, sexo, isAdmin);
         this.titolAcademic = titolAcademic;
         // Inicialitzar el mapa de distàncies
         distancias = new HashMap<>();

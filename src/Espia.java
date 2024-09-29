@@ -16,8 +16,8 @@ public class Espia extends Empleado {
     private String nombreEnClave;
     private String telefonoContacto;
 
-    Espia (String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String nombreClave, String telefono){
-        super(nombre, salari, edad, direccion, anosDeExperiencia, sexo);
+    Espia (String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String nombreClave, String telefono, boolean isAdmin){
+        super(nombre, salari, edad, direccion, anosDeExperiencia, sexo, isAdmin);
         nombreEnClave = nombreClave;
         telefonoContacto = telefono;
 
@@ -36,25 +36,15 @@ public class Espia extends Empleado {
         GreyPanel.setBounds(20, 40, 200, 300);
         frame.add(GreyPanel);
 
-        NomClauL = new JLabel("Nom en clau: " + nombreEnClave);
-        NomClauL.setBounds(20, 10, 160, 20);
-        GreyPanel = new JPanel();
-        GreyPanel.setBackground(Color.gray);
-        GreyPanel.setLayout(null);
-        GreyPanel.setBounds(20, 40, 200, 300);
-        frame.add(GreyPanel);
-
+        // Aquí solo deberías definir el panel una vez y no duplicarlo.
 
         NomClauL = new JLabel("Nom en clau: " + nombreEnClave);
-        NomClauL.setBounds(20,10,80,20);
+        NomClauL.setBounds(20,10,160,20); // Ajustado el ancho para que se vea el texto completo
         GreyPanel.add(NomClauL);
 
         TelefonL = new JLabel("Telefon de contacte: " + telefonoContacto);
         TelefonL.setBounds(20, 40, 160, 20);
         GreyPanel.add(TelefonL);
-
-        frame.revalidate();
-        frame.repaint();
 
         // Panel de acción
         AccioPanel = new JPanel();
@@ -78,6 +68,7 @@ public class Espia extends Empleado {
         mensajeEncriptadoLabel.setBounds(20, 100, 260, 30);
         AccioPanel.add(mensajeEncriptadoLabel);
 
+
         // Acción al pulsar el botón
         enviarButton.addActionListener(new ActionListener() {
             @Override
@@ -89,6 +80,8 @@ public class Espia extends Empleado {
         });
 
         frame.setVisible(true); // Mover setVisible al final
+        frame.revalidate();
+        frame.repaint();
     }
 
     private static String enviarMensajeEncriptado(String mensaje) {

@@ -10,8 +10,8 @@ public class Mecanico extends Empleado implements ActionListener {
     private String numeroDeTaller;
 
     // Constructor modificado: eliminar apellido
-    public Mecanico(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String numTaller) {
-        super(nombre, salari, edad, direccion, anosDeExperiencia, sexo); // Llama al constructor de Empleado correctamente
+    public Mecanico(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String numTaller, boolean isAdmin) {
+        super(nombre, salari, edad, direccion, anosDeExperiencia, sexo, isAdmin); // Llama al constructor de Empleado correctamente
         this.numeroDeTaller = numTaller;
 
         // Configuración de la ventana

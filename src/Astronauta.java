@@ -22,8 +22,8 @@ public class Astronauta extends Empleado {
     private String fechaPrimerVuelo;
 
     // Constructor modificado: quitar apellido
-    public Astronauta(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String fechaPrimerVuelo) {
-        super(nombre, edad, salari, direccion, anosDeExperiencia, sexo);
+    public Astronauta(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String fechaPrimerVuelo, boolean isAdmin) {
+        super(nombre, edad, salari, direccion, anosDeExperiencia, sexo, isAdmin);
         this.fechaPrimerVuelo = fechaPrimerVuelo;
 
         frame = new JFrame();
@@ -40,19 +40,19 @@ public class Astronauta extends Empleado {
         GreyPanel.setBounds(20,40,200,300);
         frame.add(GreyPanel);
 
-        nomL = new JLabel("Nom: ");
+        nomL = new JLabel("Nom: " + nombre);
         nomL.setBounds(20,10,80,20);
         GreyPanel.add(nomL);
 
-        edatL = new JLabel("Edad: ");
+        edatL = new JLabel("Edad: " + edad);
         edatL.setBounds(20,30,80,20);
         GreyPanel.add(edatL);
 
-        adreçaL = new JLabel("Adreça: ");
+        adreçaL = new JLabel("Adreça: " + direccion);
         adreçaL.setBounds(20,50,80,20);
         GreyPanel.add(adreçaL);
 
-        sexeL = new JLabel("Sexe: ");
+        sexeL = new JLabel("Sexe: " +sexo);
         sexeL.setBounds(20,70,80,20);
         GreyPanel.add(sexeL);
 
@@ -87,6 +87,8 @@ public class Astronauta extends Empleado {
         mensajeEncriptadoArea.setLineWrap(true); // Habilitar el ajuste de línea
         mensajeEncriptadoArea.setWrapStyleWord(true); // Ajustar líneas completas
         mensajeEncriptadoArea.setEditable(false); // Hacer que el área de texto sea solo de lectura
+        mensajeEncriptadoArea.setOpaque(false);
+        mensajeEncriptadoArea.setBorder(null);
         AccioPanel.add(mensajeEncriptadoArea);
 
         enviarButton.addActionListener(new ActionListener() {
@@ -105,6 +107,9 @@ public class Astronauta extends Empleado {
         coordenadasLabel = new JLabel("Coordenadas: ");
         coordenadasLabel.setBounds(20, 250, 260, 30);
         AccioPanel.add(coordenadasLabel);
+
+        frame.revalidate();
+        frame.repaint();
 
         generarCoordenadasButton.addActionListener(new ActionListener() {
             @Override
@@ -128,9 +133,5 @@ public class Astronauta extends Empleado {
 
     private static String enviarMensajeEncriptado(String mensaje) {
         return mensaje.replaceAll("[aeiouAEIOUäëïöüÄËÏÖÜáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙ]", "");
-    }
-
-    public static void main(String[] args) {
-        new Astronauta("Nombre", 1234, 25, "Direccion", "Anos de Experiencia", "Sexo", "Primer Vuelo");
     }
 }
