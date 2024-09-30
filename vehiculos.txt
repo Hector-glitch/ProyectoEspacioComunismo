@@ -1,2 +1,0 @@
-Serie: 1255, Revisión: Mañana, Tipo: Camion, Máx. Pasajeros: 3, En Taller: true
-Serie: 12456, Revisión: Un año, Tipo: Coche, Máx. Pasajeros: 5, En Taller: true

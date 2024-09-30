@@ -123,7 +123,7 @@ public class FisicFrame extends Empleado implements ActionListener {
         AccioPanel = new JPanel();
         AccioPanel.setBackground(new Color(255, 255, 255, 200)); // Fondo blanco con transparencia
         AccioPanel.setLayout(null);
-        AccioPanel.setBounds(240, 40, 200, 300);
+        AccioPanel.setBounds(240, 40, 300, 300);
         backgroundPanel.add(AccioPanel);
 
         // ComboBox para seleccionar el planeta
@@ -138,6 +138,8 @@ public class FisicFrame extends Empleado implements ActionListener {
         distanciaArea.setEditable(false);
         distanciaArea.setOpaque(false);
         distanciaArea.setBorder(null);
+        distanciaArea.setLineWrap(true);
+        distanciaArea.setWrapStyleWord(true);
         AccioPanel.add(distanciaArea);
 
         tempsArea = new JTextArea(" ");
@@ -145,6 +147,8 @@ public class FisicFrame extends Empleado implements ActionListener {
         tempsArea.setEditable(false);
         tempsArea.setOpaque(false);
         tempsArea.setBorder(null);
+        tempsArea.setLineWrap(true);
+        tempsArea.setWrapStyleWord(true);
         AccioPanel.add(tempsArea);
 
         areaTextArea = new JTextArea(" ");
@@ -152,6 +156,8 @@ public class FisicFrame extends Empleado implements ActionListener {
         areaTextArea.setEditable(false);
         areaTextArea.setOpaque(false);
         areaTextArea.setBorder(null);
+        areaTextArea.setLineWrap(true);
+        areaTextArea.setWrapStyleWord(true);
         AccioPanel.add(areaTextArea);
 
         costArea = new JTextArea(" ");
@@ -159,6 +165,8 @@ public class FisicFrame extends Empleado implements ActionListener {
         costArea.setEditable(false);
         costArea.setOpaque(false);
         costArea.setBorder(null);
+        areaTextArea.setLineWrap(true);
+        areaTextArea.setWrapStyleWord(true);
         AccioPanel.add(costArea);
 
         investigacioArea = new JTextArea(" ");
@@ -166,6 +174,8 @@ public class FisicFrame extends Empleado implements ActionListener {
         investigacioArea.setEditable(false);
         investigacioArea.setOpaque(false);
         investigacioArea.setBorder(null);
+        investigacioArea.setLineWrap(true);
+        investigacioArea.setWrapStyleWord(true);
         AccioPanel.add(investigacioArea);
 
         // Acción del ComboBox

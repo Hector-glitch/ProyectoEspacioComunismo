@@ -23,7 +23,7 @@ public class Mecanico {
             while (rs.next()) {
                 int numeroSerie = rs.getInt("numero_serie");
                 String revision = rs.getString("revision");
-                String tipoVehiculo = rs.getString("tipo_viniculo");
+                String tipoVehiculo = rs.getString("tipo_vehiculo");
                 int maxPasajeros = rs.getInt("max_pasajeros");
                 int taller = rs.getInt("taller");
                 String enTaller = taller == 1 ? "Sí" : "No";
