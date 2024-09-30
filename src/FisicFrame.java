@@ -1,7 +1,10 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -11,23 +14,16 @@ import java.util.Objects;
 public class FisicFrame extends Empleado implements ActionListener {
 
     JFrame frame;
-    JLabel nomL,  salariL, edatL, adreçaL, expL, ciutatL, sexeL, TitolAcademicL;
-    JPanel GreyPanel;
-    JPanel AccioPanel;
+    JLabel nomL, salariL, edatL, adreçaL, expL, ciutatL, sexeL, TitolAcademicL;
+    JPanel GreyPanel, AccioPanel, backgroundPanel;
     JComboBox<String> planetasComboBox;
-    JTextArea distanciaArea;
-    JTextArea tempsArea; // Nou JTextArea per mostrar el temps calculat
-    JTextArea areaTextArea;
-    JTextArea costArea;
-    JTextArea investigacioArea;
-    // Mapa per a les distàncies dels planetes
+    JTextArea distanciaArea, tempsArea, areaTextArea, costArea, investigacioArea;
     HashMap<String, String> distancias;
     private String titolAcademic;
 
     public FisicFrame(String nombre, int salari, int edad, String direccion, String anosDeExperiencia, String sexo, String titolAcademic, String ciutatOifici, boolean isAdmin) {
         super(nombre, salari, edad, direccion, anosDeExperiencia, sexo, ciutatOifici, isAdmin);
         this.titolAcademic = titolAcademic;
-        // Inicialitzar el mapa de distàncies
         distancias = new HashMap<>();
         distancias.put("Triar Planeta", " ");
         distancias.put("Mercuri", "101.000.000 Km");
@@ -38,20 +34,33 @@ public class FisicFrame extends Empleado implements ActionListener {
         distancias.put("Urà", "2.601.000.000 Km");
         distancias.put("Neptú", "4.306.000.000 Km");
 
+        // Configuración de la ventana
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Físic");
         frame.setSize(510, 420);
         frame.setLayout(null);
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null); // Centrar el frame
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
 
+        ImageIcon icon = new ImageIcon("src/Imatges/CCCP.png");
+        Image scaledIcon = icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+        frame.setIconImage(icon.getImage());
+
+        // Panel de fondo
+        backgroundPanel = new BackgroundPanel(); // Crear el panel de fondo
+        backgroundPanel.setLayout(null);
+        backgroundPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+        frame.add(backgroundPanel);
+
+        // Panel gris para la información del físico
         GreyPanel = new JPanel();
-        GreyPanel.setBackground(Color.gray);
+        GreyPanel.setBackground(new Color(255, 255, 255, 200)); // Fondo blanco con transparencia
         GreyPanel.setLayout(null);
         GreyPanel.setBounds(20, 40, 200, 300);
-        frame.add(GreyPanel);
+        backgroundPanel.add(GreyPanel);
 
+        // Etiquetas de información
         nomL = new JLabel("Nom: " + nombre);
         nomL.setBounds(20, 10, 80, 20);
         GreyPanel.add(nomL);
@@ -60,12 +69,12 @@ public class FisicFrame extends Empleado implements ActionListener {
         salariL.setBounds(20, 30, 80, 20);
         GreyPanel.add(salariL);
 
-        edatL = new JLabel("Edad: " + edad);
+        edatL = new JLabel("Edat: " + edad);
         edatL.setBounds(20, 50, 80, 20);
         GreyPanel.add(edatL);
 
         adreçaL = new JLabel("Adreça: " + direccion);
-        adreçaL.setBounds(20, 70, 80, 20);
+        adreçaL.setBounds(20, 70, 150, 20);
         GreyPanel.add(adreçaL);
 
         expL = new JLabel("Anys Exp.: " + anosDeExperiencia);
@@ -73,7 +82,7 @@ public class FisicFrame extends Empleado implements ActionListener {
         GreyPanel.add(expL);
 
         ciutatL = new JLabel("Ciutat d'Ofici: " + ciutatOifici);
-        ciutatL.setBounds(20, 110, 100, 20);
+        ciutatL.setBounds(20, 110, 120, 20);
         GreyPanel.add(ciutatL);
 
         sexeL = new JLabel("Sexe: " + sexo);
@@ -84,193 +93,124 @@ public class FisicFrame extends Empleado implements ActionListener {
         TitolAcademicL.setBounds(20, 150, 150, 20);
         GreyPanel.add(TitolAcademicL);
 
-        // Botó per fitxar hora d'entrada
+        // Botones de fichaje de entrada y salida
         JButton entradaButton = new JButton("Fitxar entrada");
-        entradaButton.setBounds(20, 180, 120, 30); // Ajustar la posició i mida
+        entradaButton.setBounds(20, 180, 120, 30);
         GreyPanel.add(entradaButton);
 
-        // Botó per fitxar hora de sortida
         JButton sortidaButton = new JButton("Fitxar sortida");
-        sortidaButton.setBounds(20, 220, 120, 30); // Ajustar la posició i mida
-        sortidaButton.setEnabled(false); // Comença desactivat
+        sortidaButton.setBounds(20, 220, 120, 30);
+        sortidaButton.setEnabled(false);
         GreyPanel.add(sortidaButton);
 
-        // Etiqueta per mostrar l'hora d'entrada
         JLabel entradaHoraLabel = new JLabel("Hora entrada:");
-        entradaHoraLabel.setBounds(20, 255, 120, 20); // Posició per la etiqueta
+        entradaHoraLabel.setBounds(20, 255, 120, 20);
         GreyPanel.add(entradaHoraLabel);
 
-        // Etiqueta que canviarà per mostrar la data i hora d'entrada
         JLabel entradaHoraValor = new JLabel(" ");
-        entradaHoraValor.setBounds(100, 255, 200, 20); // Ajustar la posició i mida
+        entradaHoraValor.setBounds(100, 255, 200, 20);
         GreyPanel.add(entradaHoraValor);
 
-        // Etiqueta per mostrar l'hora de sortida
         JLabel sortidaHoraLabel = new JLabel("Hora sortida:");
-        sortidaHoraLabel.setBounds(20, 270, 120, 20); // Posició per la etiqueta
+        sortidaHoraLabel.setBounds(20, 270, 120, 20);
         GreyPanel.add(sortidaHoraLabel);
 
-        // Etiqueta que canviarà per mostrar la data i hora de sortida
         JLabel sortidaHoraValor = new JLabel(" ");
-        sortidaHoraValor.setBounds(100, 270, 200, 20); // Ajustar la posició i mida
+        sortidaHoraValor.setBounds(100, 270, 200, 20);
         GreyPanel.add(sortidaHoraValor);
 
-
-        //----------------------Altre panell---------------------------
-
+        // Segundo panel para la acción
         AccioPanel = new JPanel();
-        AccioPanel.setBackground(Color.lightGray);
+        AccioPanel.setBackground(new Color(255, 255, 255, 200)); // Fondo blanco con transparencia
         AccioPanel.setLayout(null);
         AccioPanel.setBounds(240, 40, 200, 300);
-        frame.add(AccioPanel);
+        backgroundPanel.add(AccioPanel);
 
-        // Crear el JComboBox per als planetes
+        // ComboBox para seleccionar el planeta
         String[] planetas = {"Triar Planeta", "Mercuri", "Venus", "Mart", "Júpiter", "Saturn", "Urà", "Neptú"};
         planetasComboBox = new JComboBox<>(planetas);
         planetasComboBox.setBounds(20, 10, 160, 30);
         AccioPanel.add(planetasComboBox);
 
-        // Cambiar JLabel a JTextArea per mostrar la distància
+        // TextAreas para la información de distancias, tiempo, área, etc.
         distanciaArea = new JTextArea(" ");
         distanciaArea.setBounds(20, 50, 160, 30);
-        distanciaArea.setLineWrap(true);
-        distanciaArea.setWrapStyleWord(true);
         distanciaArea.setEditable(false);
         distanciaArea.setOpaque(false);
         distanciaArea.setBorder(null);
         AccioPanel.add(distanciaArea);
 
-        // Crear un JTextArea per mostrar el temps calculat
         tempsArea = new JTextArea(" ");
-        tempsArea.setBounds(20, 90, 100, 30); // Ajustar la posició i mida
-        tempsArea.setLineWrap(true); // Permetre salt de línia
-        tempsArea.setWrapStyleWord(true); // Ajustar per paraules senceres
-        tempsArea.setEditable(false); // Fer que no sigui editable
-        tempsArea.setOpaque(false); // Fer transparent
-        tempsArea.setBorder(null); // Treure el borde
+        tempsArea.setBounds(20, 90, 100, 30);
+        tempsArea.setEditable(false);
+        tempsArea.setOpaque(false);
+        tempsArea.setBorder(null);
         AccioPanel.add(tempsArea);
 
-        // Crear una nova JTextArea per mostrar l'àrea del planeta
         areaTextArea = new JTextArea(" ");
-        areaTextArea.setBounds(20, 130, 120, 30); // Ajustar la posició i mida
-        areaTextArea.setLineWrap(true); // Permetre salt de línia
-        areaTextArea.setWrapStyleWord(true); // Ajustar per paraules senceres
-        areaTextArea.setEditable(false); // Fer que no sigui editable
-        areaTextArea.setOpaque(false); // Fer transparent
-        areaTextArea.setBorder(null); // Treure el borde
+        areaTextArea.setBounds(20, 130, 120, 30);
+        areaTextArea.setEditable(false);
+        areaTextArea.setOpaque(false);
+        areaTextArea.setBorder(null);
         AccioPanel.add(areaTextArea);
 
-        // Crear JTextArea per mostrar el cost
         costArea = new JTextArea(" ");
         costArea.setBounds(20, 170, 200, 60);
-        costArea.setLineWrap(true);
-        costArea.setWrapStyleWord(true);
         costArea.setEditable(false);
         costArea.setOpaque(false);
         costArea.setBorder(null);
         AccioPanel.add(costArea);
 
-        // TextArea per mostrar la classificació d'investigació econòmica
-        investigacioArea = new JTextArea();
+        investigacioArea = new JTextArea(" ");
         investigacioArea.setBounds(20, 210, 130, 60);
-        investigacioArea.setLineWrap(true);
-        investigacioArea.setWrapStyleWord(true);
         investigacioArea.setEditable(false);
         investigacioArea.setOpaque(false);
         investigacioArea.setBorder(null);
         AccioPanel.add(investigacioArea);
 
+        // Acción del ComboBox
+        planetasComboBox.addActionListener(e -> {
+            String planetaSeleccionado = (String) planetasComboBox.getSelectedItem();
+            String distancia = distancias.get(planetaSeleccionado);
+            if ("Triar Planeta".equals(planetaSeleccionado)) {
+                distanciaArea.setText(" ");
+            } else {
+                distanciaArea.setText("Distància des de la terra: " + distancia);
+            }
 
-        DecimalFormat decimalFormat = new DecimalFormat("#,###.00");
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy ");
-
-
-        planetasComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String planetaSeleccionado = (String) planetasComboBox.getSelectedItem();
-                String distancia = distancias.get(planetaSeleccionado);
-                if (Objects.equals(planetasComboBox.getSelectedItem(), "Triar Planeta")) {
-                    distanciaArea.setText(" ");
-                } else {
-                    distanciaArea.setText("Distància des de la terra: " + distancia);
-                }
-
-                // Calcular el temps
-                double temps = Fisic.CalcTemps(planetaSeleccionado);
-                if (temps != -1) {
-                    tempsArea.setText("Temps de viatge: " + decimalFormat.format(temps) + " anys");
-                } else {
-                    tempsArea.setText(" ");
-                }
-
-                // Calcular i mostrar l'àrea del planeta
-                double area = Fisic.CalcArea(planetaSeleccionado);
-                if (area != -1) {
-                    areaTextArea.setText("Àrea del planeta: " + decimalFormat.format(area) + " km²");
-                } else {
-                    areaTextArea.setText(" ");
-                }
-
-                // Calcular i mostrar el cost per recórrer l'àrea del planeta
-                double cost = Fisic.CalcCostRecorre(area);
-                if (cost != -1) {
-                    costArea.setText("Cost per recórrer: " + decimalFormat.format(cost) + " ₽");
-                } else {
-                    costArea.setText(" ");
-                }
-
-                // Determinar si és el planeta més econòmic d'investigar
-                String planetaEconomico = Fisic.CompararCostos();
-                if (planetaSeleccionado.equals(planetaEconomico)) {
-                    investigacioArea.setText("Inversio en l'investigacio: Es el mes economic");
-                } else if (planetasComboBox.getSelectedItem().equals("Triar Planeta")) {
-                    investigacioArea.setText(" ");
-                } else {
-                    investigacioArea.setText("Inversio en l'investigacio: No és el més econòmic");
-                }
+            double temps = Fisic.CalcTemps(planetaSeleccionado);
+            if (temps != -1) {
+                tempsArea.setText("Temps de viatge: " + new DecimalFormat("#,###.00").format(temps) + " anys");
+            } else {
+                tempsArea.setText(" ");
             }
         });
 
-        entradaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Capturar la data i hora actual
-                LocalDateTime now = LocalDateTime.now();
-                String formattedDateTime = now.format(dateTimeFormatter);
-
-                // Actualitzar l'etiqueta amb la data i hora d'entrada
-                entradaHoraValor.setText(formattedDateTime);
-
-                // Desactivar el botó d'entrada i activar el botó de sortida
-                entradaButton.setEnabled(false);
-                sortidaButton.setEnabled(true);
-            }
-        });
-
-        sortidaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Capturar la data i hora actual
-                LocalDateTime now = LocalDateTime.now();
-                String formattedDateTime = now.format(dateTimeFormatter);
-
-                // Actualitzar l'etiqueta amb la data i hora de sortida
-                sortidaHoraValor.setText(formattedDateTime);
-
-                // Desactivar el botó de sortida i activar el botó d'entrada
-                sortidaButton.setEnabled(false);
-                entradaButton.setEnabled(true);
-            }
-        });
-
-        frame.revalidate();
-        frame.repaint();
+        // Mostrar el frame
+        frame.setVisible(true);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {}
 
+    // Panel de fondo personalizado
+    private class BackgroundPanel extends JPanel {
+        private Image backgroundImage;
+
+        public BackgroundPanel() {
+            try {
+                backgroundImage = ImageIO.read(new File("src/Imatges/FisicBK.jpg")); // Cambia esta ruta por la ruta de tu imagen
+            } catch (IOException e) {
+                e.printStackTrace(); // Muestra el error en la consola
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        }
     }
 }
-

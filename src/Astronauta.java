@@ -40,6 +40,7 @@ public class Astronauta extends Empleado {
         frame.setTitle("Astronauta");
         frame.setSize(600, 420);
         frame.setLocationRelativeTo(null); // Centrar el frame
+        frame.setResizable(false);
 
         // Añadir el panel con la imagen de fondo
         BackgroundPanel backgroundPanel = new BackgroundPanel();
@@ -53,6 +54,10 @@ public class Astronauta extends Empleado {
         greyPanel.setOpaque(true); // Hacer el panel semitransparente
         greyPanel.setBackground(new Color(255, 255, 255, 200)); // Color blanco con 200 de opacidad
         backgroundPanel.add(greyPanel);
+
+        ImageIcon icon = new ImageIcon("src/Imatges/CCCP.png");
+        Image scaledIcon = icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+        frame.setIconImage(icon.getImage());
 
         // Etiquetas para la información del astronauta
         nomL = new JLabel("Nom: " + nombre);

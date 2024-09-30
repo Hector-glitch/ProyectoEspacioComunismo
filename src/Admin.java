@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -21,6 +22,7 @@ public class Admin {
         frame.setLocationRelativeTo(null);
         ImageIcon icon = new ImageIcon("src/Imatges/a.png"); // Cargar la imagen
         frame.setIconImage(icon.getImage()); // Establecer el icono
+        frame.setResizable(false);
 
         // Tabla para mostrar espías
         String[] columnNames = {"Número Empleado", "Usuario", "Nombre Clave", "Teléfono Contacto"};
@@ -247,6 +249,10 @@ public class Admin {
                 PreparedStatement psEspia = conn.prepareStatement(deleteEspiaQuery);
                 psEspia.setInt(1, numEmpleado);
                 psEspia.executeUpdate();
+
+                ImageIcon icon = new ImageIcon("src/Imatges/CCCP.png");
+                Image scaledIcon = icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+                frame.setIconImage(icon.getImage());
 
                 String deleteEmpleadoQuery = "DELETE FROM empleados WHERE num_empleado = ?";
                 PreparedStatement psEmpleado = conn.prepareStatement(deleteEmpleadoQuery);

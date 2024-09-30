@@ -23,11 +23,13 @@ public class Mecanico {
             while (rs.next()) {
                 int numeroSerie = rs.getInt("numero_serie");
                 String revision = rs.getString("revision");
-                String tipoVehiculo = rs.getString("tipo_vehiculo");
+                String tipoVehiculo = rs.getString("tipo_viniculo");
                 int maxPasajeros = rs.getInt("max_pasajeros");
-                boolean enTaller = rs.getBoolean("taller");
+                int taller = rs.getInt("taller");
+                String enTaller = taller == 1 ? "Sí" : "No";
 
-                vehiculos.add(numeroSerie + " " + revision + " " + tipoVehiculo + " " + maxPasajeros + " " + (enTaller ? "En Taller" : "Disponible"));
+                vehiculos.add("Serie: " + numeroSerie + ", Revisión: " + revision + ", Tipo: " + tipoVehiculo +
+                        ", Máx. Pasajeros: " + maxPasajeros + ", En Taller: " + enTaller);
             }
 
             if (vehiculos.isEmpty()) {

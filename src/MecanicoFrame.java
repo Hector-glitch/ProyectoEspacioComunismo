@@ -30,12 +30,17 @@ public class MecanicoFrame extends Empleado {
         frame.setSize(510, 420);
         frame.setLayout(null);
         frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
 
         // Panel de fondo
         backgroundPanel = new BackgroundPanel(); // Creación del panel de fondo
         backgroundPanel.setLayout(null);
         backgroundPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
         frame.add(backgroundPanel);
+
+        ImageIcon icon = new ImageIcon("src/Imatges/CCCP.png");
+        Image scaledIcon = icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+        frame.setIconImage(icon.getImage());
 
         // Panel gris para la información del mecánico
         GreyPanel = new JPanel();
@@ -154,6 +159,24 @@ public class MecanicoFrame extends Empleado {
         VehiculosPanel.add(btnListarVehiculos);
         VehiculosPanel.add(btnAgregarVehiculo);
         VehiculosPanel.add(btnCambiarEstadoTaller);
+
+        btnListarVehiculos.addActionListener(e -> mecanico.listarVehiculos());
+
+        btnAgregarVehiculo.addActionListener(e -> {
+            String numeroSerie = txtNumeroSerie.getText();
+            String revision = txtRevision.getText();
+            String tipoVehiculo = txtTipoViniculo.getText();
+            String maxPasajeros = txtMaxPasajeros.getText();
+            boolean enTaller = chkEnTaller.isSelected();
+
+            mecanico.agregarVehiculo(numeroSerie, revision, tipoVehiculo, maxPasajeros, enTaller);
+        });
+
+        btnCambiarEstadoTaller.addActionListener(e -> {
+            String numeroSerie = txtNumeroSerie.getText();
+            boolean enTaller = chkEnTaller.isSelected();
+            mecanico.cambiarEstadoTaller(numeroSerie, enTaller);
+        });
 
         // Mostrar el marco
         frame.setVisible(true);

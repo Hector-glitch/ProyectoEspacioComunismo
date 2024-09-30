@@ -19,8 +19,7 @@ public class LaunchPage implements ActionListener {
     JLabel UserLabel;
     JTextField UserTextF;
     JLabel ContraLabel;
-    JTextField ContraTextF;
-    JButton Button;
+    JPasswordField ContraTextF;
 
     LaunchPage() {
         frame = new JFrame();
@@ -28,6 +27,7 @@ public class LaunchPage implements ActionListener {
         frame.setTitle("Programa Espacial URSS");
         frame.setSize(420, 420);
         frame.setLocationRelativeTo(null); // Centrar el frame
+        frame.setResizable(false);
 
         ImageIcon icon = new ImageIcon("src/Imatges/CCCP.png");
         Image scaledIcon = icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
@@ -59,7 +59,7 @@ public class LaunchPage implements ActionListener {
         ContraLabel.setBounds(20, 100, 200, 40);
         loginPanel.add(ContraLabel);
 
-        ContraTextF = new JTextField();
+        ContraTextF = new JPasswordField();
         ContraTextF.setBounds(20, 140, 280, 30);
         loginPanel.add(ContraTextF);
 
@@ -112,7 +112,7 @@ public class LaunchPage implements ActionListener {
     }
 
     // Clase que representa el panel con la imagen de fondo
-    class BackgroundPanel extends JPanel {
+    static class BackgroundPanel extends JPanel {
         private BufferedImage backgroundImage;
 
         public BackgroundPanel() {

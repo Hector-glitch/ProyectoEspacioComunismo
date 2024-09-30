@@ -23,11 +23,16 @@ public class Espia extends Empleado {
         nombreEnClave = nombreClave;
         telefonoContacto = telefono;
 
+        ImageIcon icon = new ImageIcon("src/Imatges/CCCP.png");
+        Image scaledIcon = icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+        frame.setIconImage(icon.getImage());
+
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Espia");
         frame.setSize(375, 420);
         frame.setLocationRelativeTo(null); // Centrar el frame
+        frame.setResizable(false);
 
         // Añadir el panel con la imagen de fondo
         BackgroundPanel backgroundPanel = new BackgroundPanel();
